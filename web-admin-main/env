@@ -1,0 +1,7 @@
+DB_CONNECTION=mssql
+DB_HOST=[host]
+DB_DATABASE=[database]
+DB_USERNAME=sa
+DB_PASSWORD=[password]
+
+port=3000
