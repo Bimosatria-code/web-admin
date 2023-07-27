@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Admin</title>
+    <!-- Font Awesome -->
+		<link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+		<!-- Ionicons -->
+		<link rel="stylesheet" href="/css/ionicons.min.css">
+		<!-- DataTables -->
+		<link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+		<link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+		<!-- Theme style -->
+		<link rel="stylesheet" href="/dist/css/adminlte.min.css">
+		<link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row no-gutter">
+            <!-- The image half -->
+            <div class="col-md-6">
+                <div class="login d-flex align-items-center py-5">
+                    <!-- Demo content-->
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-10 col-xl-7 mx-auto">
+                                <h3 class="display-4" style="text-align: center">Welcome To</h3>
+                                <p class="text-muted mb-4" style="text-align: center">Web Admin<p>
+                                <image src="/image/bank-index-4.jpeg" class="center" />
+                            </div>
+                        </div>
+                    </div><!-- End -->
+                </div>
+            </div>
+            <!-- The content half -->
+            <div class="col-md-6 bg-light">
+                <div class="login d-flex align-items-center py-5">
+                    <!-- Demo content-->
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-10 col-xl-7 mx-auto">
+                                <h3 class="display-4" style="text-align: center">Reset Password</h3>
+                                <hr>
+                                <span>Please change your password in the fields below immedietly, for better security</span>
+																<ul>
+																	<li>Password (UpperCase, LowerCase and Number)</li>
+																	<li>Minimun 6 & Maximum 8 Character</li>
+																</ul>
+                                <form action="/reset" method="post" class="row g-3 needs-validation" novalidate autocomplete="off">
+                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                                    <div class="col-md-12">
+                                      <br>
+                                      <input type="hidden" name="uuid" value="<%= uuid %>" />
+																			
+																				<div class="input-group mb-3">
+																					<input name="password" 
+																									type="password"
+																									class="input form-control" 
+																									id="password" 
+																									placeholder="password"
+																									maxlength="8"
+																									minlength="6"
+																									pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$"
+																									required
+																									aria-label="password" 
+																									aria-describedby="basic-addon1" />
+
+																					<div class="input-group-append">
+																						<span class="input-group-text" onclick="password_show_hide();">
+																							<i class="fas fa-eye" id="show_eye"></i>
+																							<i class="fas fa-eye-slash d-none" id="hide_eye"></i>
+																						</span>
+																					</div>
+																				</div>
+																			
+                                      <!-- <input type="password" 
+                                        name="password"
+                                        class="form-control" 
+                                        id="validationCustom03"
+                                        maxlength="8"
+                                        minlength="6"
+                                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$"
+                                        required> -->
+                                      
+                                    </div>
+                                    <div class="col-12">
+																			<button class="btn btn-primary" type="submit">Reset</button>
+																		</div>
+
+																		
+                                  </form>
+																	<div class="invalid-feedback">
+																		<ul>
+																				<li>Password (UpperCase, LowerCase and Number)</li>
+																				<li>Minimun 6 & Maximum 8 Character</li>
+																		</ul>
+																	</div>
+                                </div>
+                        </div>
+                    </div><!-- End -->
+                </div>
+            </div><!-- End -->
+        </div>
+    </div>
+    <script>
+      // Example starter JavaScript for disabling form submissions if there are invalid fields
+      (function () {
+      'use strict'
+
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      var forms = document.querySelectorAll('.needs-validation')
+
+      // Loop over them and prevent submission
+      Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+          form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+            }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+
+		function password_show_hide() {
+			var x = document.getElementById("password");
+			var show_eye = document.getElementById("show_eye");
+			var hide_eye = document.getElementById("hide_eye");
+			hide_eye.classList.remove("d-none");
+			if (x.type === "password") {
+				x.type = "text";
+				show_eye.style.display = "none";
+				hide_eye.style.display = "block";
+			} else {
+				x.type = "password";
+				show_eye.style.display = "block";
+				hide_eye.style.display = "none";
+			}
+		}
+  </script>
+</body>
+</html>

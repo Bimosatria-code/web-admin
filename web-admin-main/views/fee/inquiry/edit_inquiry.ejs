@@ -1,0 +1,391 @@
+<!-- Header -->
+<%- include('../../layout/header.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Setting Inquiry</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Setting Fee</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+ <!-- Main content -->
+ <section class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <!-- <button class="btn btn-primary reload">Reload</button>
+        <hr> -->
+        <form id="formInquiry" autocomplete="off">
+          <input type="hidden" name="id" value="<%= inquiry.id %>" />
+          <!-- <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Request Aktivasi</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="request_activation" name="request_activation" required>
+                <option value="1" <%= inquiry.request_activation ? 'selected' : '' %>>Aktif</option>
+                <option value="0" <%= inquiry.request_activation ? '' : 'selected' %>>Non Aktif</option>
+              </select>
+            </div>
+          </div> -->
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Pcode</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="pcode" name="pcode" required>
+                <% for (let trans of master) { %>
+                  <option value="<%= trans.id %>" <%= inquiry.pcode === trans.id ? 'selected' : '' %>><%= trans.pcode %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Deskripsi</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="description" 
+                      name="description" 
+                      minlength="1"
+                      maxlength="40" 
+                      value="<%= inquiry.description %>"
+                      readonly
+                       />
+            </div>
+          </div>
+  
+          <hr/>	
+					
+					<div class="form-group row">
+            <label class="col-sm-2 col-form-label">Acc Credit</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="acc_credit" 
+                      name="acc_credit" 
+                      minlength="10"
+                      maxlength="11" 
+											onkeypress='validate(event)' 
+											value="<%= inquiry.acc_credit %>"
+											 />
+            </div>
+          </div>
+					<div class="form-group row">
+            <label class="col-sm-2 col-form-label">Format Ket</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="format_ket" 
+                      name="format_ket" 
+                      minlength="1"
+                      maxlength="40" 
+											value="<%= inquiry.format_ket %>"
+											 />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Channel ID</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="channel_id" 
+                      name="channel_id" 
+                      minlength="1"
+                      maxlength="4" 
+                      onkeypress='validate(event)' 
+                      value="<%= inquiry.channel_id %>"
+                       />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Pcode BV</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="pcode_bv" 
+                      name="pcode_bv" 
+                      minlength="1"
+                      maxlength="6" 
+                      value="<%= inquiry.pcode_bv %>"
+                       />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Switcher</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="switcher" 
+                      name="switcher" 
+                      minlength="1"
+                      maxlength="10" 
+                      value="<%= inquiry.switcher %>"
+                       />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Acquirer</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="acq" 
+                      name="acq" 
+                      minlength="1"
+                      maxlength="11" 
+                      value="<%= inquiry.acq %>"
+                       />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Transafer Indicator</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="trf_indicator" 
+                      name="trf_indicator" 
+                      minlength="1"
+                      maxlength="1" 
+                      value="<%= inquiry.trf_indicator %>"
+                       />
+            </div>
+          </div>
+					<div class="form-group row">
+            <label class="col-sm-2 col-form-label">Fee Account (1)</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="fee_acc_1" 
+                      name="fee_acc_1" 
+                      minlength="10"
+                      maxlength="11" 
+											onkeypress='validate(event)' 
+											value="<%= inquiry.fee_acc_1 %>"
+											 />
+            </div>
+          </div>
+					<div class="form-group row">
+            <label class="col-sm-2 col-form-label">Fee Account (2)</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="fee_acc_2" 
+                      name="fee_acc_2" 
+                      minlength="10"
+                      maxlength="11" 
+											onkeypress='validate(event)' 
+											value="<%= inquiry.fee_acc_2 %>"
+											 />
+            </div>
+          </div>
+					<div class="form-group row">
+            <label class="col-sm-2 col-form-label">Fee Account (3)</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="fee_acc_3" 
+                      name="fee_acc_3" 
+                      minlength="10"
+                      maxlength="11" 
+											value="<%= inquiry.fee_acc_3 %>"
+											 />
+            </div>
+          </div>
+					<div class="form-group row">
+            <label class="col-sm-2 col-form-label">Fee Amount (1)</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="fee_amount_1" 
+                      name="fee_amount_1" 
+                      minlength="1"
+                      maxlength="15" 
+											onkeypress='validate(event)' 
+                      onchange="check_row(1)"
+											value="<%= inquiry.fee_amount_1 %>"
+											required />
+            </div>
+          </div>
+					<div class="form-group row">
+            <label class="col-sm-2 col-form-label">Fee Amount (2)</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="fee_amount_2" 
+                      name="fee_amount_2" 
+                      minlength="1"
+                      maxlength="15" 
+											onkeypress='validate(event)' 
+                      onchange="check_row(2)"
+											value="<%= inquiry.fee_amount_2 %>"
+											required />
+            </div>
+          </div>
+					<div class="form-group row">
+            <label class="col-sm-2 col-form-label">Fee Amount (3)</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="fee_amount_3" 
+                      name="fee_amount_3" 
+                      minlength="1"
+                      maxlength="15" 
+											onkeypress='validate(event)'
+                      onchange="check_row(3)"
+											value="<%= inquiry.fee_amount_3 %>"
+											required />
+            </div>
+          </div>
+        
+          
+          <div class="col-sm-12">
+            <a href="/inquiry" class="btn btn-secondary float-right mr-2">Kembali</a>
+            <button type="submit" class="btn btn-primary float-right mr-2">Save</button>
+          </div>
+      </form>
+      </div>
+      
+    </div>
+    
+
+  </div>
+  <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../../layout/footer/js.ejs'); %>
+
+<!-- Additional Js -->
+<script src="/js/sweetalert2.min.js"></script>
+<script src="/js/additional/inquiry/inquiry.js"></script>
+<script>
+  // Get pcode, biller code, product type and product code
+  $(document).ready(function(){
+    $("#pcode").change(function(){
+      var id = this.value;
+      ajax_request(id);
+    });
+  });
+
+  function check_row(sequence) {
+    var fee_1 = $("input[name=fee_amount_"+sequence+"]").val();
+    var fee_2 = $("input[name=fee_amount_"+sequence+"]").val();
+    var fee_3 = $("input[name=fee_amount_"+sequence+"]").val();
+
+    if(parseInt(fee_1) > 0 || parseInt(fee_2) > 0 || parseInt(fee_3) > 0) {
+      document.getElementById("fee_acc_"+sequence).required = true;
+    } else {
+      document.getElementById("fee_acc_"+sequence).required = false;
+    }
+  }
+
+  function ajax_request(id){
+    $.ajax({
+      url: "/select-master/" + id,
+      type:"get",
+      success:function(response){
+      	if (response.code === 500) {
+          Swal.fire(
+            response.label,
+            response.message,
+            response.status
+          )
+        }
+
+        // set value
+        document.getElementById("description").setAttribute('value', response.message.descriptions);
+      },
+      error: function(error) {
+        console.log(error);
+      }
+    });
+  }
+  $('#formInquiry').submit(function (e) {
+      e.preventDefault();
+
+		let id = $("input[name=id]").val();
+		// let request_activation = $("#request_activation").val();
+		let pcode	= $("#pcode").val();
+		let description = $("input[name=description]").val();
+		let acc_credit = $("input[name=acc_credit]").val();
+		let format_ket = $("input[name=format_ket]").val();
+    let channel_id = $("input[name=channel_id]").val();
+    let pcode_bv = $("input[name=pcode_bv]").val();
+    let switcher = $("input[name=switcher]").val();
+    let acq = $("input[name=acq]").val();
+    let trf_indicator = $("input[name=trf_indicator]").val();
+		let fee_acc_1 = $("input[name=fee_acc_1]").val();
+		let fee_acc_2 = $("input[name=fee_acc_2]").val();
+		let fee_acc_3 = $("input[name=fee_acc_3]").val();
+		let fee_amount_1 = $("input[name=fee_amount_1]").val();
+		let fee_amount_2 = $("input[name=fee_amount_2]").val();
+		let fee_amount_3 = $("input[name=fee_amount_3]").val();
+
+    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); 
+
+    $.ajax({
+      url: "/update-inquiry",
+      headers: {
+        'CSRF-Token': token // <-- is the csrf token as a header
+      },
+      data:{
+				id:id,
+        // request_activation:request_activation,
+				pcode:pcode,
+				description:description,
+				acc_credit: acc_credit,
+				format_ket: format_ket,
+        channel_id: channel_id,
+        pcode_bv: pcode_bv,
+        switcher: switcher,
+        acq: acq,
+        trf_indicator: trf_indicator,
+				fee_acc_1: fee_acc_1,
+				fee_acc_2: fee_acc_2,
+				fee_acc_3: fee_acc_3,
+				fee_amount_1: fee_amount_1,
+				fee_amount_2: fee_amount_2,
+				fee_amount_3: fee_amount_3,
+      },
+      type:"POST",
+      success:function(response){
+        // console.log(response)
+        if (response.code == 200) {
+          Swal.fire(
+            response.label,
+            response.message,
+            response.status
+          ).then(nx => {
+            location.href = '/inquiry';
+          });
+        } else {
+          Swal.fire(
+            response.label,
+            response.message,
+            response.status
+          ).then(nx => {
+            location.reload();
+          });
+        }
+      },
+      error: function(error) {
+        console.log(error);
+      }
+    });
+  });
+</script>
+
+<!-- Footer -->
+<%- include('../../layout/footer.ejs') %>

@@ -1,0 +1,9 @@
+/node_modules
+/log
+package-lock.json
+package.json
+.env
+.env.example
+*.env
+files
+*.xlsx

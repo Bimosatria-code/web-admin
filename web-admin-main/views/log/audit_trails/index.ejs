@@ -1,0 +1,234 @@
+<!-- Header -->
+<%- include('../../layout/header.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Audit Trails</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Audit Trails</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+ <!-- Main content -->
+ <section class="content">
+  <% if (errorMessage) { %>
+    <div class="alert alert-warning" role="alert">
+      <%= errorMessage %>
+    </div>
+  <% } %>
+  <div class="container">
+    <form method="post" action="/log/filter-audit-trails">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="row">
+        <div class="col-sm">
+          <div class="form-group row">
+            <label for="inputEmail3">Action Start Date :</label>
+            <div class="col-sm-7">
+              <input type="date" class="form-control" id="start" name="start" />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword3">Action End Date :</label>
+            <div class="col-sm-7">
+              <input type="date" class="form-control" id="end" name="end" />
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="form-group row">
+            <label for="inputEmail3">Module :</label>
+            <div class="col-sm-8">
+              <select id="modules" name="modules" class="form-control">
+                <option value="" selected>Select</option>
+                <% for (let mod of modules) { %>
+                  <option value="<%= mod.id %>"><%= mod.name %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="form-group row">
+            <label for="inputEmail3">Action :</label>
+            <div class="col-sm-8">
+              <select id="actions" name="actions" class="form-control">
+                <option value="" selected>Select</option>
+                <% for (let act of actions) { %>
+                  <option value="<%= act.id %>"><%= act.name %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Retrive</button>
+    </form>
+  </div>
+  <br/>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+           <div class="card-header">
+            <div class="row">
+              <div class="col-sm">
+               <!--  <% var reject = previllage.includes(49); if (reject) { %>
+                <button type="button" class="btn btn-warning float-right mr-2 xls"><i class="fa fa-download"></i> PDF</button>
+                <% } %> -->
+               <!--  <% var reject = previllage.includes(48); if (reject) { %>
+                <button type="button" class="btn btn-success float-right mr-2 pdf"><i class="fa fa-download"></i> Download Excel </button>
+                <% } %> -->
+              </div>
+            </div>
+
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <div class="float-right">
+              <% var reject = previllage.includes(48); if (reject) { %>
+                <button type="button" class="btn btn-success float-right mr-2 excel"><i class="fa fa-download"></i> Download Excel </button>
+              <% } %>
+            </div>
+            
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+              <tr>
+                <th>Date Action</th>
+                <th>User</th>
+                <th>Role</th>
+                <th>IP Address</th>
+                <th>Action</th>
+                <th>Module</th>
+                <th>Object</th>
+              </tr>
+              </thead>
+              <tbody>
+                <% for (let el of data) { %>
+                  <tr>
+                    <td><%= el.created_at ? moment(el.created_at).format('YYYY-MM-DD HH:mm:ss') : '-' %></td>
+                    <td><%= el.users %></td>
+                    <td><%= el.role %></td>
+                    <% 
+                      var ip = el.ip_address.split('::ffff:');
+                    %>
+                    <td><%= ip[1] %></td>
+                    <td><%= el.actions %></td>
+                    <td><%= el.modules %></td>
+                    <td><%= el.object %></td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+
+
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../../layout/footer/js.ejs'); %>
+
+<!-- Additional Js -->
+<script src="/js/sweetalert2.min.js"></script>
+<script src="/js/dataTables.buttons.min.js"></script>
+<script src="/js/buttons.html5.min.js"></script>
+<script src="/js/jszip.min.js"></script>
+<script src="/js/pdfmake.min.js"></script>
+<script src="/js/vfs_fonts.js"></script>
+<script src=""></script>
+<script>
+$(document).ready(function () {
+  $('#example1').DataTable({
+    "searching": false,
+    // dom: 'Bfrtip',
+    // buttons: [{
+    //   extend: 'excelHtml5',
+    //   className: 'btn btn-success float-right',
+    //   title: 'Audit Trails',
+    //   text:' <i class="fa fa-download" aria-hidden="true" > Download Excel</i>',
+    //   titleAttr: 'Export Excel',"oSelectorOpts": {filter: 'applied', order: 'current'},
+    //   exportOptions: {
+    //     modifier: {
+    //       page: 'all'
+    //     },
+    //     format: {
+    //       header: function ( data, columnIdx ) {
+    //         return data;
+    //         // if(columnIdx == 1){
+    //         //   return 'column_1_header';
+    //         // } else {
+    //         //   return data;
+    //         // }
+    //       }
+    //     }
+    //   }
+    // }]
+  });
+  
+  tblDT = $('#example1').DataTable();
+  var audit = previllage.includes(48); 
+  if (audit) { 
+    tblDT.button( 0 ).enable( false );
+  }
+});
+
+  // DOWNLOAD EXCEL
+  $('.excel').click(function(){
+    var start = "<%= start %>";
+    var end = "<%= end %>";
+    var mod = "<%= mod %>";
+    var act = "<%= act %>";
+
+    const param = {start: start, end: end, mod: mod, act: act}
+
+    Swal.fire({
+      title: 'Are you sure want to download?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        $.get("/log/excel-audit-trails", param, function (response) {
+          if (response.code === 404) {
+            location.reload();
+          } else {
+            window.location="/log/excel-trails"
+          }
+        });
+      } else {
+        location.reload();
+      }
+    });
+  });
+</script> 
+<!-- Footer -->
+
+<%- include('../../layout/footer.ejs') %>
+

@@ -1,0 +1,25 @@
+Berikut Credential untuk VM dan VPN nya mas
+VM IP: 172.21.40.59
+user: root
+pass: Index123!
+
+Untuk akses DB yang dev bisa menggunakan:
+Host: 172.21.40.60
+Port: 1433
+User: sa
+Password: P@ssw0rd123#
+Database Name: mwbvis
+
+VPN BANK INDEX : 
+Terget IP: 182.23.0.76
+VPN Type : Point to Point Tunneling Protocol (PPTP)
+
+Credential middleware:
+username : Digilab TIBCO2
+password : tibco222!
+
+username: Digilab.WebAdmin3
+password: DigilabWA3
+Atau
+username: Digilab.WebAdmin2
+password: DigilabWA2

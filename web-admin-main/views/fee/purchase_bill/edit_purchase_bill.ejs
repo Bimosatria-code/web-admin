@@ -1,0 +1,880 @@
+<!-- Header -->
+<%- include('../../layout/header.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Setting Fee</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Setting Fee</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+ <!-- Main content -->
+ <section class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <form id="formPurchase" autocomplete="off">
+          <input type="hidden" name="id" value="<%= purchase.id %>" />
+          <!-- <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Request Aktivasi</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="request_activation" name="request_activation" required>
+                <option value="1" <%= purchase.request_activation ? 'selected' : '' %>>Aktif</option>
+                <option value="0" <%= purchase.request_activation ? '' : 'selected' %>>Non Aktif</option>
+              </select>
+            </div>
+            <button class="btn btn-primary">Reload</button>
+          </div> -->
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Transaksi</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="transaction" name="transaction" required>
+                <% for (let trans of master) { %>
+                  <option value="<%= trans.id %>" <%= purchase.transactions === trans.id ? 'selected' : '' %>><%= trans.transactions %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Pcode</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="pcode" 
+                      name="pcode"
+                      minlength="6"
+                      maxlength="6" 
+                      value="<%= purchase.pcode %>"
+                      readonly
+                      required />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Biller Code</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="biller_code" 
+                      name="biller_code" 
+                      minlength="4"
+                      maxlength="4" 
+                      value="<%= purchase.biller_code %>"
+                      readonly
+                      required />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Product Type</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="product_type" 
+                      name="product_type" 
+                      minlength="4"
+                      maxlength="4" 
+                      value="<%= purchase.product_type %>"
+                      readonly
+                      required />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Product Code</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="product_code" 
+                      name="product_code" 
+                      minlength="4"
+                      maxlength="4" 
+                      value="<%= purchase.product_code %>"
+                      readonly
+                      required />
+            </div>
+          </div>
+  
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">No. Rek</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                class="form-control" 
+                id="rek_number" 
+                name="rek_number" 
+                minlength="10"
+                maxlength="11"
+                onkeypress='validate(event)' 
+                value="<%= purchase.rek_number %>"
+                required />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Nama Rek</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="rek_name" 
+                      name="rek_name" 
+                      minlength="1"
+                      maxlength="40" 
+                      value="<%= purchase.rek_name %>"
+                      required />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Format Ket</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="format" 
+                      name="format" 
+                      minlength="1"
+                      maxlength="40" 
+                      value="<%= purchase.format %>"
+                      required />
+            </div>
+          </div>
+  
+          <br/>
+          <h4>Kotran Transaction</h4>
+          <hr/>
+  
+          <div class="container-fluid"> 
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Original</th>
+                  <th>Reversal</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>
+                    Debet
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="trans_debet_ori" 
+                            name="trans_debet_ori" 
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+                            value="<%= purchase.trans_debet_ori %>"
+                            required />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="trans_debet_rev" 
+                            name="trans_debet_rev"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+                            value="<%= purchase.trans_debet_rev %>"
+                            required />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Kredit
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="trans_credit_ori" 
+                            name="trans_credit_ori"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+                            value="<%= purchase.trans_credit_ori %>"
+                            required />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="trans_credit_rev" 
+                            name="trans_credit_rev"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+                            value="<%= purchase.trans_credit_rev %>"
+                            required />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+  
+          <br/>
+          <h4>Kotran Fee</h4>
+          <hr/>
+
+          <div class="container-fluid"> 
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th class="col-md-1">Original</th>
+                  <th class="col-md-1">Reversal</th>
+                  <th class="col-md-1">Fee IB</th>
+                  <th class="col-md-1">Fee MB</th>
+                  <th class="col-md-1">Fee IBB</th>
+                  <th class="col-md-2">Rekening Penampung Fee</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>
+                    Kotran Fee Debet
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="fee_debet_ori" 
+                            name="fee_debet_ori" 
+                            style="width: 130px !important;"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+                            value="<%= purchase.fee_debet_ori %>" 
+                            required />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_debet_rev" 
+                            name="fee_debet_rev" 
+                            style="width: 130px !important;"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+                            value="<%= purchase.fee_debet_rev %>" 
+                            required />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_debet_ib" 
+                            name="fee_debet_ib"
+                            onkeypress='validate(event)'
+                            minlength="1"
+                            maxlength="18"
+                            style="width: 130px !important;" 
+                            value="<%= purchase.fee_debet_ib %>"
+                            required />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_debet_mb" 
+                            name="fee_debet_mb" 
+                            style="width: 130px !important;"
+                            onkeypress='validate(event)'
+                            minlength="1"
+                            maxlength="18"
+                            value="<%= purchase.fee_debet_mb %>"
+                            required />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_debet_ibb" 
+                            name="fee_debet_ibb" 
+                            style="width: 130px !important;"
+                            onkeypress='validate(event)'
+                            minlength="1"
+                            maxlength="18"
+                            value="<%= purchase.fee_debet_ibb %>"
+                            required />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_debet_rek" 
+                            name="fee_debet_rek" 
+                            style="width: auto !important;"
+                           
+                            minlength="1"
+                            maxlength="11"
+                            value="<%= purchase.fee_debet_rek %>"
+                            required />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Kotran Fee Credit (1)
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_1_ori" 
+                            name="fee_credit_1_ori" 
+                            style="width: 130px !important;"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+                            value="<%= purchase.fee_credit_1_ori %>"
+                            required />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_1_rev" 
+                            name="fee_credit_1_rev" 
+                            style="width: 130px !important;"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+                            value="<%= purchase.fee_credit_1_rev %>"
+                            required />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_1_ib" 
+                            name="fee_credit_1_ib" 
+                            style="width: 130px !important;" 
+                            onkeypress='validate(event)'
+                            minlength="1"
+                            maxlength="18"
+                            value="<%= purchase.fee_credit_1_ib %>"
+                            required />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_1_mb" 
+                            name="fee_credit_1_mb" 
+                            style="width: 130px !important;"
+                            onkeypress='validate(event)'
+                            minlength="1"
+                            maxlength="18"
+                            value="<%= purchase.fee_credit_1_mb %>"
+                            required />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_1_ibb" 
+                            name="fee_credit_1_ibb" 
+                            style="width: 130px !important;"
+                            onkeypress='validate(event)'
+                            minlength="1"
+                            maxlength="18"
+                            value="<%= purchase.fee_credit_1_ibb %>"
+                            required />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_1_rek" 
+                            name="fee_credit_1_rek" 
+                            style="width: auto !important;"
+                            onkeypress='validate(event)'
+                            minlength="10"
+                            maxlength="11" 
+                            value="<%= purchase.fee_credit_1_rek %>"
+                            required />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Kotran Fee Credit (2)
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_2_ori" 
+                            name="fee_credit_2_ori" 
+                            style="width: 130px !important;"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4" 
+                            value="<%= purchase.fee_credit_2_ori %>"
+                             />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_2_rev" 
+                            name="fee_credit_2_rev" 
+                            style="width: 130px !important;"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+                            value="<%= purchase.fee_credit_2_rev %>" 
+                             />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_2_ib" 
+                            name="fee_credit_2_ib"
+                            onkeypress='validate(event)'
+                            onchange="check_row(2)"
+                            minlength="1"
+                            maxlength="18"
+                            value="<%= purchase.fee_credit_2_ib %>"
+                            style="width: 130px !important;" />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_2_mb" 
+                            name="fee_credit_2_mb"
+                            onkeypress='validate(event)'
+                            onchange="check_row(2)"
+                            minlength="1"
+                            maxlength="18"
+                            value="<%= purchase.fee_credit_2_mb %>"
+                            style="width: 130px !important;" />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_2_ibb" 
+                            name="fee_credit_2_ibb"
+                            onkeypress='validate(event)'
+                            onchange="check_row(2)"
+                            minlength="1"
+                            maxlength="18"
+                            value="<%= purchase.fee_credit_2_ibb %>"
+                            style="width: 130px !important;" />
+                  </td> 
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_2_rek" 
+                            name="fee_credit_2_rek"
+                            onkeypress='validate(event)'
+                            minlength="10"
+                            maxlength="11"
+                            style="width: auto !important;" 
+                            value="<%= purchase.fee_credit_2_rek %>"
+                             />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Kotran Fee Credit (3)
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_3_ori" 
+                            name="fee_credit_3_ori"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_credit_3_ori %>"
+                             />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_3_rev" 
+                            name="fee_credit_3_rev"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_credit_3_rev %>"
+                             />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_3_ib" 
+                            name="fee_credit_3_ib"
+                            onkeypress='validate(event)'
+                            onchange="check_row(3)"
+                            minlength="1"
+                            maxlength="18"
+                            value="<%= purchase.fee_credit_3_ib %>"
+                            style="width: 130px !important;" />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_3_mb" 
+                            name="fee_credit_3_mb"
+                            onkeypress='validate(event)'
+                            onchange="check_row(3)"
+                            minlength="1"
+                            maxlength="18"
+                            value="<%= purchase.fee_credit_3_mb %>"
+                            style="width: 130px !important;" />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_3_ibb" 
+                            name="fee_credit_3_ibb"
+                            onkeypress='validate(event)'
+                            onchange="check_row(3)"
+                            minlength="1"
+                            maxlength="18"
+                            value="<%= purchase.fee_credit_3_ibb %>"
+                            style="width: 130px !important;" />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_3_rek" 
+                            name="fee_credit_3_rek"
+                            onkeypress='validate(event)'
+                            minlength="10"
+                            maxlength="11"
+                            style="width: auto !important;" 
+                            value="<%= purchase.fee_credit_3_rek %>"
+                             />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Kotran Fee Credit (4)
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_4_ori" 
+                            name="fee_credit_4_ori" 
+                            minlength="4"
+                            maxlength="4"
+                            onkeypress='validate(event)'
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_credit_4_ori %>"
+                             />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_4_rev" 
+                            name="fee_credit_4_rev" 
+                            minlength="4"
+                            maxlength="4"
+                            onkeypress='validate(event)'
+                            style="width: 130px !important;" 
+                            value="<%= purchase.fee_credit_4_rev %>"
+                             />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_4_ib" 
+                            name="fee_credit_4_ib"
+                            onkeypress='validate(event)'
+                            onchange="check_row(4)"
+                            minlength="1"
+                            maxlength="18"
+                            value="<%= purchase.fee_credit_4_ib %>"
+                            style="width: 130px !important;" />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_4_mb" 
+                            name="fee_credit_4_mb"
+                            onkeypress='validate(event)'
+                            onchange="check_row(4)"
+                            minlength="1"
+                            maxlength="18"
+                            value="<%= purchase.fee_credit_4_mb %>"
+                            style="width: 130px !important;" />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_4_ibb" 
+                            name="fee_credit_4_ibb"
+                            onkeypress='validate(event)'
+                            onchange="check_row(4)"
+                            minlength="1"
+                            maxlength="18"
+                            value="<%= purchase.fee_credit_4_ibb %>"
+                            style="width: 130px !important;" />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_4_rek" 
+                            name="fee_credit_4_rek"
+                            onkeypress='validate(event)'
+                            minlength="10"
+                            maxlength="11"
+                            style="width: auto !important;" 
+                            value="<%= purchase.fee_credit_4_rek %>"
+                             />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Kotran Fee Credit (5)
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_5_ori" 
+                            name="fee_credit_5_ori" 
+                            style="width: 130px !important;"
+                            minlength="4"
+                            maxlength="4" 
+                            onkeypress='validate(event)' 
+                            value="<%= purchase.fee_credit_5_ori %>"/>
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_5_rev" 
+                            name="fee_credit_5_rev" 
+                            style="width: 130px !important;" 
+                            minlength="4"
+                            maxlength="4"
+                            onkeypress='validate(event)' 
+                            value="<%= purchase.fee_credit_5_rev %>"/>
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_5_ib" 
+                            name="fee_credit_5_ib" 
+                            style="width: 130px !important;" 
+                            minlength="1"
+                            maxlength="18"
+                            onkeypress='validate(event)'
+                            onchange="check_row(5)"
+                            value="<%= purchase.fee_credit_5_ib %>" />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_5_mb" 
+                            name="fee_credit_5_mb" 
+                            style="width: 130px !important;" 
+                            minlength="1"
+                            maxlength="18"
+                            onkeypress='validate(event)'
+                            onchange="check_row(5)"
+                            value="<%= purchase.fee_credit_5_mb %>" />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_5_ibb" 
+                            name="fee_credit_5_ibb" 
+                            style="width: 130px !important;" 
+                            minlength="1"
+                            maxlength="18"
+                            onkeypress='validate(event)'
+                            onchange="check_row(5)"
+                            value="<%= purchase.fee_credit_5_ibb %>" />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_5_rek" 
+                            name="fee_credit_5_rek"
+                            minlength="10"
+                            maxlength="11" 
+                            onkeypress='validate(event)'
+                            style="width: auto !important;" 
+                            value="<%= purchase.fee_credit_5_rek %>"
+                             />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="col-sm-12">
+            <a href="/fee" class="btn btn-secondary float-right mr-2">Kembali</a>
+            <button type="submit" class="btn btn-primary float-right mr-2">Save</button>
+          </div>
+      </form>
+      </div>
+      
+    </div>
+    
+
+  </div>
+  <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../../layout/footer/js.ejs'); %>
+
+<!-- Additional Js -->
+<script src="/js/sweetalert2.min.js"></script>
+<script src="/js/additional/purchase/purchase.js"></script>
+<script>
+  // Get pcode, biller code, product type and product code
+  $(document).ready(function(){
+    $("#transaction").change(function(){
+      var id = this.value;
+      ajax_request(id);
+    });
+  });
+
+  function check_row(sequence) {
+    var fee_ib = $("input[name=fee_credit_"+sequence+"_ib]").val();
+    var fee_mb = $("input[name=fee_credit_"+sequence+"_mb]").val();
+    var fee_ibb = $("input[name=fee_credit_"+sequence+"_ibb]").val();
+
+    if(parseInt(fee_ib) > 0 || parseInt(fee_mb) > 0 || parseInt(fee_ibb) > 0) {
+      document.getElementById("fee_credit_"+sequence+"_ori").required = true;
+      document.getElementById("fee_credit_"+sequence+"_rev").required = true;
+      document.getElementById("fee_credit_"+sequence+"_rek").required = true;
+    } else {
+      document.getElementById("fee_credit_"+sequence+"_ori").required = false;
+      document.getElementById("fee_credit_"+sequence+"_rev").required = false;
+      document.getElementById("fee_credit_"+sequence+"_rek").required = false;
+    }
+  }
+
+  function ajax_request(id){
+    $.ajax({
+      url: "/select-master/" + id,
+      type:"get",
+      success:function(response){
+      	if (response.code === 500) {
+          Swal.fire(
+            response.label,
+            response.message,
+            response.status
+          )
+        }
+
+        // set value
+        document.getElementById("pcode").setAttribute('value', response.message.pcode);
+        document.getElementById("biller_code").setAttribute('value', response.message.biller_code);
+        document.getElementById("product_type").setAttribute('value', response.message.product_type);
+        document.getElementById("product_code").setAttribute('value', response.message.product_code);
+          
+      },
+      error: function(error) {
+        console.log(error);
+      }
+    });
+  }
+
+  // Save
+  $('#formPurchase').submit(function (e) {
+      e.preventDefault();
+      
+      let id = $("input[name=id]").val();
+      // let request_activation = $("#request_activation").val();
+      let pcode = $("input[name=pcode]").val();
+      let biller_code = $("input[name=biller_code]").val();
+      let product_type = $("input[name=product_type]").val();
+      let product_code = $("input[name=product_code]").val();
+      let transaction = $("#transaction").val();
+      let rek_number = $("input[name=rek_number]").val();
+      let rek_name = $("input[name=rek_name]").val();
+      let format = $("input[name=format]").val();
+      let trans_debet_ori = $("input[name=trans_debet_ori]").val();
+      let trans_credit_rev = $("input[name=trans_credit_rev]").val();
+      let trans_credit_ori = $("input[name=trans_credit_ori]").val();
+      let trans_debet_rev = $("input[name=trans_debet_rev]").val();
+      let fee_debet_ori = $("input[name=fee_debet_ori]").val();
+      let fee_debet_rev = $("input[name=fee_debet_rev]").val();
+      let fee_debet_ib = $("input[name=fee_debet_ib]").val();
+      let fee_debet_mb = $("input[name=fee_debet_mb]").val();
+      let fee_debet_ibb = $("input[name=fee_debet_ibb]").val();
+      let fee_debet_rek = $("input[name=fee_debet_rek]").val();
+      let fee_credit_1_ori = $("input[name=fee_credit_1_ori]").val();
+      let fee_credit_1_rev = $("input[name=fee_credit_1_rev]").val();
+      let fee_credit_1_ib = $("input[name=fee_credit_1_ib]").val();
+      let fee_credit_1_mb = $("input[name=fee_credit_1_mb]").val();
+      let fee_credit_1_ibb = $("input[name=fee_credit_1_ibb]").val();
+      let fee_credit_1_rek = $("input[name=fee_credit_1_rek]").val();
+      let fee_credit_2_ori = $("input[name=fee_credit_2_ori]").val();
+      let fee_credit_2_rev = $("input[name=fee_credit_2_rev]").val();
+      let fee_credit_2_ib = $("input[name=fee_credit_2_ib]").val();
+      let fee_credit_2_mb = $("input[name=fee_credit_2_mb]").val();
+      let fee_credit_2_ibb = $("input[name=fee_credit_2_ibb]").val();
+      let fee_credit_2_rek = $("input[name=fee_credit_2_rek]").val();
+      let fee_credit_3_ori = $("input[name=fee_credit_3_ori]").val();
+      let fee_credit_3_rev = $("input[name=fee_credit_3_rev]").val();
+      let fee_credit_3_ib = $("input[name=fee_credit_3_ib]").val();
+      let fee_credit_3_mb = $("input[name=fee_credit_3_mb]").val();
+      let fee_credit_3_ibb = $("input[name=fee_credit_3_ibb]").val();
+      let fee_credit_3_rek = $("input[name=fee_credit_3_rek]").val();
+      let fee_credit_4_ori = $("input[name=fee_credit_4_ori]").val();
+      let fee_credit_4_rev = $("input[name=fee_credit_4_rev]").val();
+      let fee_credit_4_ib = $("input[name=fee_credit_4_ib]").val();
+      let fee_credit_4_mb = $("input[name=fee_credit_4_mb]").val();
+      let fee_credit_4_ibb = $("input[name=fee_credit_4_ibb]").val();
+      let fee_credit_4_rek = $("input[name=fee_credit_4_rek]").val();
+      let fee_credit_5_ori = $("input[name=fee_credit_5_ori]").val();
+      let fee_credit_5_rev = $("input[name=fee_credit_5_rev]").val();
+      let fee_credit_5_ib = $("input[name=fee_credit_5_ib]").val();
+      let fee_credit_5_mb = $("input[name=fee_credit_5_mb]").val();
+      let fee_credit_5_ibb = $("input[name=fee_credit_5_ibb]").val();
+      let fee_credit_5_rek = $("input[name=fee_credit_5_rek]").val();
+
+      var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); 
+
+      $.ajax({
+        url: "/update-purchase",
+        headers: {
+            'CSRF-Token': token // <-- is the csrf token as a header
+        },
+        data:{
+          id:id,
+          // request_activation : request_activation,
+          pcode : pcode,
+          biller_code : biller_code,
+          product_type : product_type,
+          product_code : product_code,
+          transaction : transaction,
+          rek_number  : rek_number,
+          rek_name : rek_name,
+          format : format,
+          trans_debet_ori : trans_debet_ori,
+          trans_credit_rev : trans_credit_rev,
+          trans_credit_ori : trans_credit_ori,
+          trans_debet_rev : trans_debet_rev,
+          fee_debet_ori : fee_debet_ori,
+          fee_debet_rev : fee_debet_rev,
+          fee_debet_ib : fee_debet_ib,
+          fee_debet_mb : fee_debet_mb,
+          fee_debet_ibb : fee_debet_ibb,
+          fee_debet_rek : fee_debet_rek,
+          fee_credit_1_ori : fee_credit_1_ori,
+          fee_credit_1_rev : fee_credit_1_rev,
+          fee_credit_1_ib : fee_credit_1_ib,
+          fee_credit_1_mb : fee_credit_1_mb,
+          fee_credit_1_ibb : fee_credit_1_ibb,
+          fee_credit_1_rek : fee_credit_1_rek,
+          fee_credit_2_ori : fee_credit_2_ori,
+          fee_credit_2_rev : fee_credit_2_rev,
+          fee_credit_2_ib : fee_credit_2_ib,
+          fee_credit_2_mb : fee_credit_2_mb,
+          fee_credit_2_ibb : fee_credit_2_ibb,
+          fee_credit_2_rek : fee_credit_2_rek,
+          fee_credit_3_ori : fee_credit_3_ori,
+          fee_credit_3_rev : fee_credit_3_rev,
+          fee_credit_3_ib : fee_credit_3_ib,
+          fee_credit_3_mb : fee_credit_3_mb,
+          fee_credit_3_ibb : fee_credit_3_ibb,
+          fee_credit_3_rek :fee_credit_3_rek,
+          fee_credit_4_ori : fee_credit_4_ori,
+          fee_credit_4_rev : fee_credit_4_rev,
+          fee_credit_4_ib : fee_credit_4_ib,
+          fee_credit_4_mb : fee_credit_4_mb,
+          fee_credit_4_ibb : fee_credit_4_ibb,
+          fee_credit_4_rek : fee_credit_4_rek,
+          fee_credit_5_ori : fee_credit_5_ori,
+          fee_credit_5_rev : fee_credit_5_rev,
+          fee_credit_5_ib : fee_credit_5_ib,
+          fee_credit_5_mb : fee_credit_5_mb,
+          fee_credit_5_ibb : fee_credit_5_ibb,
+          fee_credit_5_rek : fee_credit_5_rek
+        },
+        type:"POST",
+        success:function(response){
+          // console.log(response)
+          if (response.code == 200) {
+            Swal.fire(
+              response.label,
+              response.message,
+              response.status
+            ).then(nx => {
+              location.href = '/fee';
+            });
+          } else {
+            Swal.fire(
+              response.label,
+              response.message,
+              response.status
+            ).then(nx => {
+              location.reload();
+            });
+          }
+        },
+        error: function(error) {
+          console.log(error);
+        }
+       });
+  });
+</script>
+
+<!-- Footer -->
+<%- include('../../layout/footer.ejs') %>

@@ -1,0 +1,930 @@
+<!-- Header -->
+<%- include('../../layout/header.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Setting Transfer Dana</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Setting Fee</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+ <!-- Main content -->
+ <section class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <!-- <button class="btn btn-primary reload">Reload</button>
+        <hr> -->
+        <form id="formTransfer" autocomplete="off">
+          <!-- <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Request Aktivasi</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="request_activation" name="request_activation" disabled>
+                <option value="1" <%= transfer.request_activation ? 'selected' : '' %>>Aktif</option>
+                <option value="0" <%= transfer.request_activation ? '' : 'selected' %>>Non Aktif</option>
+              </select>
+            </div>
+          </div> -->
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Description Pcode</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="description_pcode" name="description_pcode" disabled>
+                <% for (let trans of master) { %>
+                  <option value="<%= trans.id %>" <%= transfer.description_pcode === trans.id ? 'selected' : '' %>><%= trans.transactions %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Pcode</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="pcode" 
+                      name="pcode"
+                      value="<%= transfer.pcode %>"
+                      disabled />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Jenis Transaksi</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="jenis_transaksi" 
+                      name="jenis_transaksi" 
+                      value="<%= transfer.jenis_transaksi %>"
+                      disabled />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Deskripsi Trx</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="trx_dec" 
+                      name="trx_dec" 
+                      value="<%= transfer.trx_dec %>"
+                      disabled />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Channel ID</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="channel_id" 
+                      name="channel_id" 
+                      value="<%= transfer.channel_id %>"
+                      disabled />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Pcode BV</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="pcode_bv" 
+                      name="pcode_bv" 
+                      value="<%= transfer.pcode_bv %>"
+                      disabled />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Switcher</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="switcher" 
+                      name="switcher" 
+                      value="<%= transfer.switcher %>"
+                      disabled />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Acquirer</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="acq" 
+                      name="acq" 
+                      value="<%= transfer.acq %>" 
+                      disabled />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Transafer Indicator</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="trf_indicator" 
+                      name="trf_indicator" 
+                      value="<%= transfer.trf_indicator %>" 
+                      disabled />
+            </div>
+          </div>
+  
+          <br/>
+          <h4>Rekening Perantara</h4>
+          <hr/>
+  
+          <div class="container-fluid"> 
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <th>
+                    Rek. Perantara Debet
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="rek_debet_perantara_1" 
+                            name="rek_debet_perantara_1"
+                            value="<%= transfer.rek_debet_perantara_1 %>"
+                            disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Rek. Perantara Credit
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="rek_credit_perantara" 
+                            name="rek_credit_perantara"
+                            value="<%= transfer.rek_credit_perantara %>"
+                            disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Rek. Perantara Debet
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="rek_debet_perantara_2" 
+                            name="rek_debet_perantara_2" 
+                            value="<%= transfer.rek_debet_perantara_2 %>" 
+                            disabled />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+  
+          <br/>
+          <h4>Kotran Transaction</h4>
+          <hr/>
+
+          <div class="container-fluid"> 
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Kotran Trx IB</th>
+                  <th>Kotran Trx MB</th>
+				  				<th>Kotran Trx IBB</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>
+                    Kotran Debet
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="trx_ib_debet_1" 
+                            name="trx_ib_debet_1"
+														value="<%= transfer.trx_ib_debet_1 %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="trx_mb_debet_1" 
+                            name="trx_mb_debet_1"
+														value="<%= transfer.trx_mb_debet_1 %>" 
+                            disabled />
+                  </td>
+									<td>
+                    <input type="text" 
+                            id="trx_ibb_debet_1" 
+                            name="trx_ibb_debet_1"
+														value="<%= transfer.trx_ibb_debet_1 %>" 
+                            disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Kotran Credit
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="trx_ib_credit" 
+                            name="trx_ib_credit"
+														value="<%= transfer.trx_ib_credit %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="trx_mb_credit" 
+                            name="trx_mb_credit"
+														value="<%= transfer.trx_mb_credit %>"
+                            disabled />
+                  </td>
+									<td>
+                    <input type="text" 
+                            id="trx_ibb_credit" 
+                            name="trx_ibb_credit"
+														value="<%= transfer.trx_ibb_credit %>" 
+                            disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>
+                    Kotran Debet
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="trx_ib_debet_2" 
+                            name="trx_ib_debet_2"
+														value="<%= transfer.trx_ib_debet_2 %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="trx_mb_debet_2" 
+                            name="trx_mb_debet_2"
+														value="<%= transfer.trx_mb_debet_2 %>"
+                            disabled />
+                  </td>
+									<td>
+                    <input type="text" 
+                            id="trx_ibb_debet_2" 
+                            name="trx_ibb_debet_2"
+														value="<%= transfer.trx_ibb_debet_2 %>" 
+                            disabled />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+					<br/>
+          <h4>Kotran Reversal</h4>
+          <hr/>
+
+          <div class="container-fluid"> 
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Kotran Reversal IB</th>
+                  <th>Kotran Reversal MB</th>
+									<th>Kotran Reversal IBB</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>
+                    Reversal Debet
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="rev_ib_debet_1" 
+                            name="rev_ib_debet_1"
+														value="<%= transfer.rev_ib_debet_1 %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="rev_mb_debet_1" 
+                            name="rev_mb_debet_1"
+														value="<%= transfer.rev_mb_debet_1 %>" 
+                            disabled />
+                  </td>
+									<td>
+                    <input type="text" 
+                            id="rev_ibb_debet_1" 
+                            name="rev_ibb_debet_1"
+														value="<%= transfer.rev_ibb_debet_1 %>" 
+                            disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Reversal Credit
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="rev_ib_credit" 
+                            name="rev_ib_credit"
+														value="<%= transfer.rev_ib_credit %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="rev_mb_credit" 
+                            name="rev_mb_credit"
+														value="<%= transfer.rev_mb_credit %>"
+                            disabled />
+                  </td>
+									<td>
+                    <input type="text" 
+                            id="rev_ibb_credit" 
+                            name="rev_ibb_credit"
+														value="<%= transfer.rev_ibb_credit %>" 
+                            disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>
+                    Reversal Debet
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="rev_ib_debet_2" 
+                            name="rev_ib_debet_2"
+														value="<%= transfer.rev_ib_debet_2 %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="rev_mb_debet_2" 
+                            name="rev_mb_debet_2"
+														value="<%= transfer.rev_mb_debet_2 %>"
+                            disabled />
+                  </td>
+									<td>
+                    <input type="text" 
+                            id="rev_ibb_debet_2" 
+                            name="rev_ibb_debet_2"
+														value="<%= transfer.rev_ibb_debet_2 %>" 
+                            disabled />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <br/>
+          <h4>Kotran Debet Fee</h4>
+          <hr/>
+
+          <div class="container-fluid"> 
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Fee IB</th>
+                  <th>Fee MB</th>
+									<th>Fee IBB</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>Original (1)</th>
+                  <td>
+                    <input type="text" id="ori_ib_1" name="ori_ib_1" value="<%= transfer.ori_ib_1 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_1" name="ori_mb_1" value="<%= transfer.ori_mb_1 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_1" name="ori_ibb_1" value="<%= transfer.ori_ibb_1 %>" disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (1)</th>
+                  <td>
+                    <input type="text" id="rev_ib_1" name="rev_ib_1" value="<%= transfer.rev_ib_1 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_1" name="rev_mb_1" value="<%= transfer.rev_mb_1 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_1" name="rev_ibb_1" value="<%= transfer.rev_ibb_1 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (1)</th>
+                  <td>
+                    <input type="text" id="acc_ib_1" name="acc_ib_1" value="<%= transfer.acc_ib_1 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_1" name="acc_mb_1" value="<%= transfer.acc_mb_1 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_1" name="acc_ibb_1" value="<%= transfer.acc_ibb_1 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (1)</th>
+                  <td>
+                    <input type="text" id="am_ib_1" name="am_ib_1" value="<%= transfer.am_ib_1 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_1" name="am_mb_1" value="<%= transfer.am_mb_1 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_1" name="am_ibb_1" value="<%= transfer.am_ibb_1 %>" disabled />
+                  </td>
+                </tr>
+
+                <tr></tr>
+
+                <tr>
+                  <th>Original (2)</th>
+                  <td>
+                    <input type="text" id="ori_ib_2" name="ori_ib_2" value="<%= transfer.ori_ib_2 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_2" name="ori_mb_2" value="<%= transfer.ori_mb_2 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_2" name="ori_ibb_2" value="<%= transfer.ori_ibb_2 %>" disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (2)</th>
+                  <td>
+                    <input type="text" id="rev_ib_2" name="rev_ib_2" value="<%= transfer.rev_ib_2 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_2" name="rev_mb_2" value="<%= transfer.rev_mb_2 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_2" name="rev_ibb_2" value="<%= transfer.rev_ibb_2 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (2)</th>
+                  <td>
+                    <input type="text" id="acc_ib_2" name="acc_ib_2" value="<%= transfer.acc_ib_2 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_2" name="acc_mb_2" value="<%= transfer.acc_mb_2 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_2" name="acc_ibb_2" value="<%= transfer.acc_ibb_2 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (2)</th>
+                  <td>
+                    <input type="text" id="am_ib_2" name="am_ib_2" value="<%= transfer.am_ib_2 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_2" name="am_mb_2" value="<%= transfer.am_mb_2 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_2" name="am_ibb_2" value="<%= transfer.am_ibb_2 %>" disabled />
+                  </td>
+                </tr>
+
+                <tr></tr>
+
+                <tr>
+                  <th>Original (3)</th>
+                  <td>
+                    <input type="text" id="ori_ib_3" name="ori_ib_3" value="<%= transfer.ori_ib_3 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_3" name="ori_mb_3" value="<%= transfer.ori_mb_3 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_3" name="ori_ibb_3" value="<%= transfer.ori_ibb_3 %>" disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (3)</th>
+                  <td>
+                    <input type="text" id="rev_ib_3" name="rev_ib_3" value="<%= transfer.rev_ib_3 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_3" name="rev_mb_3" value="<%= transfer.rev_mb_3 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_3" name="rev_ibb_3" value="<%= transfer.rev_ibb_3 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (3)</th>
+                  <td>
+                    <input type="text" id="acc_ib_3" name="acc_ib_3" value="<%= transfer.acc_ib_3 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_3" name="acc_mb_3" value="<%= transfer.acc_mb_3 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_3" name="acc_ibb_3" value="<%= transfer.acc_ibb_3 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (3)</th>
+                  <td>
+                    <input type="text" id="am_ib_3" name="am_ib_3" value="<%= transfer.am_ib_3 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_3" name="am_mb_3" value="<%= transfer.am_mb_3 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_3" name="am_ibb_3" value="<%= transfer.am_ibb_3 %>" disabled />
+                  </td>
+                </tr>
+
+                <tr></tr>
+
+                <tr>
+                  <th>Original (4)</th>
+                  <td>
+                    <input type="text" id="ori_ib_4" name="ori_ib_4" value="<%= transfer.ori_ib_4 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_4" name="ori_mb_4" value="<%= transfer.ori_mb_4 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_4" name="ori_ibb_4" value="<%= transfer.ori_ibb_4 %>" disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (4)</th>
+                  <td>
+                    <input type="text" id="rev_ib_4" name="rev_ib_4" value="<%= transfer.rev_ib_4 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_4" name="rev_mb_4" value="<%= transfer.rev_mb_4 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_4" name="rev_ibb_4" value="<%= transfer.rev_ibb_4 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (4)</th>
+                  <td>
+                    <input type="text" id="acc_ib_4" name="acc_ib_4" value="<%= transfer.acc_ib_4 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_4" name="acc_mb_4" value="<%= transfer.acc_mb_4 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_4" name="acc_ibb_4" value="<%= transfer.acc_ibb_4 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (4)</th>
+                  <td>
+                    <input type="text" id="am_ib_4" name="am_ib_4" value="<%= transfer.am_ib_4 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_4" name="am_mb_4" value="<%= transfer.am_mb_4 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_4" name="am_ibb_4" value="<%= transfer.am_ibb_4 %>" disabled />
+                  </td>
+                </tr>
+
+                <tr></tr>
+
+                <tr>
+                  <th>Original (5)</th>
+                  <td>
+                    <input type="text" id="ori_ib_5" name="ori_ib_5" value="<%= transfer.ori_ib_5 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_5" name="ori_mb_5" value="<%= transfer.ori_mb_5 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_5" name="ori_ibb_5" value="<%= transfer.ori_ibb_5 %>" disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (5)</th>
+                  <td>
+                    <input type="text" id="rev_ib_5" name="rev_ib_5" value="<%= transfer.rev_ib_5 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_5" name="rev_mb_5" value="<%= transfer.rev_mb_5 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_5" name="rev_ibb_5" value="<%= transfer.rev_ibb_5 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (5)</th>
+                  <td>
+                    <input type="text" id="acc_ib_5" name="acc_ib_5" value="<%= transfer.acc_ib_5 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_5" name="acc_mb_5" value="<%= transfer.acc_mb_5 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_5" name="acc_ibb_5" value="<%= transfer.acc_ibb_5 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (5)</th>
+                  <td>
+                    <input type="text" id="am_ib_5" name="am_ib_5" value="<%= transfer.am_ib_5 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_5" name="am_mb_5" value="<%= transfer.am_mb_5 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_5" name="am_ibb_5" value="<%= transfer.am_ibb_5 %>" disabled />
+                  </td>
+                </tr>
+
+                <tr></tr>
+
+                <tr>
+                  <th>Original (6)</th>
+                  <td>
+                    <input type="text" id="ori_ib_6" name="ori_ib_6" value="<%= transfer.ori_ib_6 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_6" name="ori_mb_6" value="<%= transfer.ori_mb_6 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_6" name="ori_ibb_6" value="<%= transfer.ori_ibb_6 %>" disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (6)</th>
+                  <td>
+                    <input type="text" id="rev_ib_6" name="rev_ib_6" value="<%= transfer.rev_ib_6 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_6" name="rev_mb_6" value="<%= transfer.rev_mb_6 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_6" name="rev_ibb_6" value="<%= transfer.rev_ibb_6 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (6)</th>
+                  <td>
+                    <input type="text" id="acc_ib_6" name="acc_ib_6" value="<%= transfer.acc_ib_6 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_6" name="acc_mb_6" value="<%= transfer.acc_mb_6 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_6" name="acc_ibb_6" value="<%= transfer.acc_ibb_6 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (6)</th>
+                  <td>
+                    <input type="text" id="am_ib_6" name="am_ib_6" value="<%= transfer.am_ib_6 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_6" name="am_mb_6" value="<%= transfer.am_mb_6 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_6" name="am_ibb_6" value="<%= transfer.am_ibb_6 %>" disabled />
+                  </td>
+                </tr>
+
+                <tr></tr>
+
+                <tr>
+                  <th>Original (7)</th>
+                  <td>
+                    <input type="text" id="ori_ib_7" name="ori_ib_7" value="<%= transfer.ori_ib_7 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_7" name="ori_mb_7" value="<%= transfer.ori_mb_7 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_7" name="ori_ibb_7" value="<%= transfer.ori_ibb_7 %>" disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (7)</th>
+                  <td>
+                    <input type="text" id="rev_ib_7" name="rev_ib_7" value="<%= transfer.rev_ib_7 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_7" name="rev_mb_7" value="<%= transfer.rev_mb_7 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_7" name="rev_ibb_7" value="<%= transfer.rev_ibb_7 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (7)</th>
+                  <td>
+                    <input type="text" id="acc_ib_7" name="acc_ib_7" value="<%= transfer.acc_ib_7 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_7" name="acc_mb_7" value="<%= transfer.acc_mb_7 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_7" name="acc_ibb_7" value="<%= transfer.acc_ibb_7 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (7)</th>
+                  <td>
+                    <input type="text" id="am_ib_7" name="am_ib_7" value="<%= transfer.am_ib_7 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_7" name="am_mb_7" value="<%= transfer.am_mb_7 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_7" name="am_ibb_7" value="<%= transfer.am_ibb_7 %>" disabled />
+                  </td>
+                </tr>
+
+                <tr></tr>
+
+                <tr>
+                  <th>Original (8)</th>
+                  <td>
+                    <input type="text" id="ori_ib_8" name="ori_ib_8" value="<%= transfer.ori_ib_8 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_8" name="ori_mb_8" value="<%= transfer.ori_mb_8 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_8" name="ori_ibb_8" value="<%= transfer.ori_ibb_8 %>" disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (8)</th>
+                  <td>
+                    <input type="text" id="rev_ib_8" name="rev_ib_8" value="<%= transfer.rev_ib_8 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_8" name="rev_mb_8" value="<%= transfer.rev_mb_8 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_8" name="rev_ibb_8" value="<%= transfer.rev_ibb_8 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (8)</th>
+                  <td>
+                    <input type="text" id="acc_ib_8" name="acc_ib_8" value="<%= transfer.acc_ib_8 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_8" name="acc_mb_8" value="<%= transfer.acc_mb_8 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_8" name="acc_ibb_8" value="<%= transfer.acc_ibb_8 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (8)</th>
+                  <td>
+                    <input type="text" id="am_ib_8" name="am_ib_8" value="<%= transfer.am_ib_8 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_8" name="am_mb_8" value="<%= transfer.am_mb_8 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_8" name="am_ibb_8" value="<%= transfer.am_ibb_8 %>" disabled />
+                  </td>
+                </tr>
+
+                <tr></tr>
+
+                <tr>
+                  <th>Original (9)</th>
+                  <td>
+                    <input type="text" id="ori_ib_9" name="ori_ib_9" value="<%= transfer.ori_ib_9 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_9" name="ori_mb_9" value="<%= transfer.ori_mb_9 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_9" name="ori_ibb_9" value="<%= transfer.ori_ibb_9 %>" disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (9)</th>
+                  <td>
+                    <input type="text" id="rev_ib_9" name="rev_ib_9" value="<%= transfer.rev_ib_9 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_9" name="rev_mb_9" value="<%= transfer.rev_mb_9 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_9" name="rev_ibb_9" value="<%= transfer.rev_ibb_9 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (9)</th>
+                  <td>
+                    <input type="text" id="acc_ib_9" name="acc_ib_9" value="<%= transfer.acc_ib_9 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_9" name="acc_mb_9" value="<%= transfer.acc_mb_9 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_9" name="acc_ibb_9" value="<%= transfer.acc_ibb_9 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (9)</th>
+                  <td>
+                    <input type="text" id="am_ib_9" name="am_ib_9" value="<%= transfer.am_ib_9 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_9" name="am_mb_9" value="<%= transfer.am_mb_9 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_9" name="am_ibb_9" value="<%= transfer.am_ibb_9 %>" disabled />
+                  </td>
+                </tr>
+
+                <tr></tr>
+
+                <tr>
+                  <th>Original (10)</th>
+                  <td>
+                    <input type="text" id="ori_ib_10" name="ori_ib_10" value="<%= transfer.ori_ib_10 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_10" name="ori_mb_10" value="<%= transfer.ori_mb_10 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_10" name="ori_ibb_10" value="<%= transfer.ori_ibb_10 %>" disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (10)</th>
+                  <td>
+                    <input type="text" id="rev_ib_10" name="rev_ib_10" value="<%= transfer.rev_ib_10 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_10" name="rev_mb_10" value="<%= transfer.rev_mb_10 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_10" name="rev_ibb_10" value="<%= transfer.rev_ibb_10 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (10)</th>
+                  <td>
+                    <input type="text" id="acc_ib_10" name="acc_ib_10" value="<%= transfer.acc_ib_10 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_10" name="acc_mb_10" value="<%= transfer.acc_mb_10 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_10" name="acc_ibb_10" value="<%= transfer.acc_ibb_10 %>" disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (10)</th>
+                  <td>
+                    <input type="text" id="am_ib_10" name="am_ib_10" value="<%= transfer.am_ib_10 %>" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_10" name="am_mb_10" value="<%= transfer.am_mb_10 %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_10" name="am_ibb_10" value="<%= transfer.am_ibb_10 %>" disabled />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="col-sm-12">
+            <a href="/transfer" class="btn btn-secondary float-right mr-2">Kembali</a>
+          </div>
+      </form>
+      </div>
+      
+    </div>
+    
+
+  </div>
+  <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../../layout/footer/js.ejs'); %>
+
+<!-- Additional Js -->
+<script src="/js/sweetalert2.min.js"></script>
+
+<!-- Footer -->
+<%- include('../../layout/footer.ejs') %>

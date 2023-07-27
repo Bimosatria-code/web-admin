@@ -1,0 +1,299 @@
+<!-- Header -->
+<%- include('../../layout/header.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Reporting Customer IBMB</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Reporting Customer IBMB</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+ <!-- Main content -->
+ <section class="content">
+  <% if (errorMessage) { %>
+    <div class="alert alert-warning" role="alert">
+      <%= errorMessage %>
+    </div>
+  <% } %>
+  <div class="container">
+    <form method="post" action="/reporting/filter-customer">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="inputEmail4">Login Start Date</label>
+              <input type="date" class="form-control" id="start_login" name="start_login" />
+            </div>
+            <div class="form-group col-md-4">
+              <label for="inputPassword4">Login End Date</label>
+              <input type="date" class="form-control" id="end_login" name="end_login" />
+            </div>
+            <div class="form-group col-md-4">
+              <label for="inputPassword4">IB</label>
+              <select class="form-control" id="ib" name="ib">
+                <option value="">Select</option>
+                <option value="aktif">Aktif</option>
+                <option value="tidak aktif">Tidak Aktif</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="inputEmail4">Aktivasi Start Date</label>
+              <input type="date" class="form-control" id="start_aktivasi" name="start_aktivasi" />
+            </div>
+            <div class="form-group col-md-4">
+              <label for="inputPassword4">Aktivasi End Date</label>
+              <input type="date" class="form-control" id="end_aktivasi" name="end_aktivasi" />
+            </div>
+            <div class="form-group col-md-4">
+              <label for="inputPassword4">Status CIF</label>
+              <select class="form-control" id="status_cif" name="status_cif">
+                <option value="">Select</option>
+                <option value="aktif">Aktif</option>
+                <option value="non aktif">Tidak Aktif</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="inputPassword4">MB</label>
+              <select class="form-control" id="mb" name="mb">
+                <option value="">Select</option>
+                <option value="aktif">Aktif</option>
+                <option value="tidak aktif">Tidak Aktif</option>
+              </select>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="inputPassword4">Cabang</label>
+              <select class="form-control" id="cabang" name="cabang">
+                <option value="">Select</option>
+                <% for (let data of branch) { %>
+                  <option value="<%= data.branch %>"><%= data.branch %></option>
+                <% } %>
+              </select>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="inputPassword4">Jenis</label>
+              <select class="form-control" id="jenis" name="jenis">
+                <option value="">Select</option>
+                <option value="nasabah">Nasabah</option>
+                <option value="karyawan">Karyawan</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="inputPassword4">Status Rekening</label>
+              <select class="form-control" id="status_rekening" name="status_rekening">
+                <option value="">Select</option>
+                <option value="aktif">Aktif</option>
+                <option value="non aktif">Tidak Aktif</option>
+              </select>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="inputPassword4">Status Transaksi</label>
+              <select class="form-control" id="status_transaksi" name="status_transaksi">
+                <option value="">Select</option>
+                <option value="sudah">Sudah</option>
+                <option value="belum">Belum</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-info"><i class="fas fa-search"></i> Retrive</button>
+    </form>
+  </div>
+  <br/><br/>
+  <div class="float-sm-left">
+    <% var xls = previllage.includes(34); if (xls) { %>
+    <button class="btn btn-success excel"><i class="fas fa-file-excel"></i> XLS</button>
+    <% } %>
+     <% var xls = previllage.includes(35); if (xls) { %>
+    <button class="btn btn-secondary txt"><i class="fas fa-file-alt"></i> TXT</button>
+    <% } %>
+  </div>
+  <br/><br/>
+  <table id="example1" class="table table-bordered table-striped" style="background-color: white; font-size: 1rem;">
+    <thead>
+      <tr>
+        <th>Tgl Login Terahir</th>
+        <th>Tgl Aktivasi</th>
+        <th>Username</th>
+        <th>Nama</th>
+        <th>No. Rek</th>
+        <th>CIF</th>
+        <th>Nomer Kartu</th>
+        <th>Internet Banking</th>
+        <th>Mobile Banking</th>
+        <th>Email</th>
+        <th>No. Telp</th>
+        <th>Serial Token</th>
+        <th>Tgl Link Token</th>
+        <th>Cabang</th>
+        <th>Kode Cabang</th>
+        <th>Nasabah / Karyawan</th>
+        <th>Status CIF</th>
+        <th>Status Rekening</th>
+        <th>Transaksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (let el of data) { %>
+      <tr>
+        <td><%= el.login_date ? moment(el.login_date).format('LL') : '-' %></td>
+        <td><%= el.activation_date ? moment(el.activation_date).format('LL') : '-' %></td>
+        <td><%= el.username%></td>
+        <td><%= el.name %></td>
+        <td><%= el.rek_number %></td>
+        <td><%= el.cif %></td>
+        <td><%= el.card_number %></td>
+        <td><%= el.internet_banking %></td>
+        <td><%= el.mobile_banking %></td>
+        <td><%= el.email %></td>
+        <td><%= el.no_telp %></td>
+        <td><%= el.serial_token %></td>
+        <td><%= el.link_token_date ? moment(el.link_token_date).format('LL') : '-' %></td>
+        <td><%= el.branch %></td>
+        <td><%= el.branch_code %></td>
+        <td><%= el.employee %></td>
+        <td><%= el.cif_status %></td>
+        <td><%= el.rek_status %></td>
+        <td><%= el.transactions %></td>
+      </tr>
+      <% } %>
+    </tbody>      
+  </table>
+</section>
+</div>
+<!-- /.content-wrapper -->
+<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Role</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('../../layout/footer/js.ejs'); %>
+
+<!-- Additional Js -->
+<script src="/js/sweetalert2.min.js"></script>
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      paging: false,
+      ordering: false,
+      scrollX: true,
+    });
+  });
+
+  // DOWNLOAD EXCEL
+  $('.excel').click(function(){
+    var start_login = '<%= start_login %>';
+    var end_login = '<%= end_login %>';
+    var start_aktivasi = '<%= start_aktivasi %>';
+    var end_aktivasi = '<%= end_aktivasi %>';
+    var status_cif = '<%= status_cif %>';
+    var ib = '<%= ib %>';
+    var mb = '<%= mb %>';
+    var cabang = '<%= cabang %>';
+    var jenis = '<%= jenis %>';
+    var status_rekening = '<%= status_rekening %>';
+    var status_transaksi = '<%= status_transaksi %>';
+
+    const param = {start_login: start_login, end_login: end_login, start_aktivasi: start_aktivasi, status_cif: status_cif, ib: ib, mb:mb, cabang:cabang, jenis:jenis, status_rekening:status_rekening, status_transaksi:status_transaksi}
+
+    Swal.fire({
+      title: 'Are you sure want to download?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        $.get("/reporting/excel-customer", param, function (response) {
+          console.log(response)
+          if (response.code === 404) {
+            location.reload();
+          } else {
+            window.location="/reporting/excel"
+          }
+        });
+      } else {
+        location.reload();
+      }
+    });
+  });
+
+
+  // DOWNLOAD TXT
+  $('.txt').click(function(){
+    var start_login = '<%= start_login %>';
+    var end_login = '<%= end_login %>';
+    var start_aktivasi = '<%= start_aktivasi %>';
+    var end_aktivasi = '<%= end_aktivasi %>';
+    var status_cif = '<%= status_cif %>';
+    var ib = '<%= ib %>';
+    var mb = '<%= mb %>';
+    var cabang = '<%= cabang %>';
+    var jenis = '<%= jenis %>';
+    var status_rekening = '<%= status_rekening %>';
+    var status_transaksi = '<%= status_transaksi %>';
+
+    const param = {start_login: start_login, end_login: end_login, start_aktivasi: start_aktivasi, status_cif: status_cif, ib: ib, mb:mb, cabang:cabang, jenis:jenis, status_rekening:status_rekening, status_transaksi:status_transaksi}
+
+    Swal.fire({
+      title: 'Are you sure want to download?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        $.get("/reporting/txt-customer", param, function (response) {
+          if (response.code === 404) {
+            location.reload();
+          } else {
+            window.location="/reporting/txt"
+          }
+        });
+      } else {
+        location.reload();
+      }
+    });
+  });
+</script>
+<!-- Footer -->
+
+<%- include('../../layout/footer.ejs') %>
+

@@ -1,0 +1,237 @@
+<!-- Header -->
+<%- include('../../layout/header.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Setting Inquiry</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Setting Fee</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+ <!-- Main content -->
+ <section class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <!-- <button class="btn btn-primary reload">Reload</button>
+        <hr> -->
+        <form id="formInquiry" autocomplete="off">
+          <!-- <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Request Aktivasi</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="request_activation" name="request_activation" disabled>
+                <option value="1" <%= inquiry.request_activation ? 'selected' : '' %>>Aktif</option>
+                <option value="0" <%= inquiry.request_activation ? '' : 'selected' %>>Non Aktif</option>
+              </select>
+            </div>
+          </div> -->
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Pcode</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="pcode" name="pcode" disabled>
+                <% for (let trans of master) { %>
+                  <option value="<%= trans.id %>" <%= inquiry.pcode === trans.id ? 'selected' : '' %>><%= trans.pcode %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Deskripsi</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="description" 
+                      name="description" 
+                      value="<%= inquiry.description %>"
+                      disabled />
+            </div>
+          </div>
+  
+          <hr/>	
+					
+					<div class="form-group row">
+            <label class="col-sm-2 col-form-label">Acc Credit</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="acc_credit" 
+                      name="acc_credit"  
+											onkeypress='validate(event)' 
+											value="<%= inquiry.acc_credit %>"
+											disabled />
+            </div>
+          </div>
+					<div class="form-group row">
+            <label class="col-sm-2 col-form-label">Format Ket</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="format_ket" 
+                      name="format_ket" 
+											value="<%= inquiry.format_ket %>"
+											disabled />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Channel ID</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="channel_id" 
+                      name="channel_id" 
+                      value="<%= inquiry.channel_id %>" 
+                      disabled />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Pcode BV</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="pcode_bv" 
+                      name="pcode_bv" 
+                      value="<%= inquiry.pcode_bv %>"
+                      disabled />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Switcher</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="switcher" 
+                      name="switcher" 
+                      value="<%= inquiry.switcher %>" 
+                      disabled />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Acquirer</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="acq" 
+                      name="acq" 
+                      value="<%= inquiry.acq %>"
+                      disabled />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Transafer Indicator</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="trf_indicator" 
+                      name="trf_indicator" 
+                      value="<%= inquiry.trf_indicator %>" 
+                      disabled />
+            </div>
+          </div>
+					<div class="form-group row">
+            <label class="col-sm-2 col-form-label">Fee Account (1)</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="fee_acc_1" 
+                      name="fee_acc_1" 
+											value="<%= inquiry.fee_acc_1 %>"
+											disabled />
+            </div>
+          </div>
+					<div class="form-group row">
+            <label class="col-sm-2 col-form-label">Fee Account (2)</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="fee_acc_2" 
+                      name="fee_acc_2" 
+											value="<%= inquiry.fee_acc_2 %>"
+											disabled />
+            </div>
+          </div>
+					<div class="form-group row">
+            <label class="col-sm-2 col-form-label">Fee Account (3)</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="fee_acc_3" 
+                      name="fee_acc_3" 
+											value="<%= inquiry.fee_acc_3 %>"
+											disabled />
+            </div>
+          </div>
+					<div class="form-group row">
+            <label class="col-sm-2 col-form-label">Fee Amount (1)</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="fee_amount_1" 
+                      name="fee_amount_1" 
+											onkeypress='validate(event)' 
+											value="<%= inquiry.fee_amount_1 %>"
+											disabled />
+            </div>
+          </div>
+					<div class="form-group row">
+            <label class="col-sm-2 col-form-label">Fee Amount (2)</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="fee_amount_2" 
+                      name="fee_amount_2" 
+											onkeypress='validate(event)' 
+											value="<%= inquiry.fee_amount_2 %>"
+											disabled />
+            </div>
+          </div>
+					<div class="form-group row">
+            <label class="col-sm-2 col-form-label">Fee Amount (3)</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="fee_amount_3" 
+                      name="fee_amount_3" 
+											onkeypress='validate(event)' 
+											value="<%= inquiry.fee_amount_3 %>"
+											disabled />
+            </div>
+          </div>
+        
+          
+          <div class="col-sm-12">
+            <a href="/inquiry" class="btn btn-secondary float-right mr-2">Kembali</a>
+          </div>
+      </form>
+      </div>
+      
+    </div>
+    
+
+  </div>
+  <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../../layout/footer/js.ejs'); %>
+
+<!-- Additional Js -->
+<script src="/js/sweetalert2.min.js"></script>
+
+<!-- Footer -->
+<%- include('../../layout/footer.ejs') %>

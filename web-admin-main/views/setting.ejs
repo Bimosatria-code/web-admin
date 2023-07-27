@@ -1,0 +1,100 @@
+<!-- Header -->
+<%- include('./layout/header.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Parameter Setting</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Parameter Setting</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Parameters</h5>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Block</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" id="block" name="block" value="<%= parameters.block %>" />
+                </div>
+              </div>
+              </form>
+          </div>
+          <div class="modal-footer">
+            <% var save = previllage.includes(40); if (save) { %>
+              <button type="button" class="btn btn-primary save">Save changes</button>
+            <% } %>
+          </div>
+        </div>
+      </div> 
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+  
+<%- include('./layout/footer/js.ejs'); %>
+
+<!-- Additional Js -->
+<script src="/js/sweetalert2.min.js"></script>
+<script>
+    $(document).on('click', '.save', function (e) {
+      event.preventDefault();
+
+      let block = $("input[name=block]").val();
+      var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+      $.ajax({
+        url: "/create-parameter",
+        headers: {
+            'CSRF-Token': token // <-- is the csrf token as a header
+        },
+        type:"POST",
+        data:{
+            block:block
+        },
+        success:function(response){
+          if (response.code == 200) {
+            Swal.fire(
+              response.label,
+              response.message,
+              response.status
+            )
+            location.reload();
+          } else {
+            Swal.fire(
+              response.label,
+              response.message,
+              response.status
+            )
+          }
+        },
+        error: function(error) {
+          console.log(error);
+        }
+       });
+  });
+</script>
+  
+<!-- Footer -->
+
+<%- include('./layout/footer.ejs') %>

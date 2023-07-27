@@ -1,0 +1,548 @@
+<!-- Header -->
+<%- include('../../layout/header.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Setting Fee</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Setting Fee</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+ <!-- Main content -->
+ <section class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <form id="formPurchase" autocomplete="off">
+          <input type="hidden" name="id" value="<%= purchase.id %>" />
+          <!-- <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Request Aktivasi</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="request_activation" name="request_activation" disabled>
+                <option value="1" <%= purchase.request_activation ? 'selected' : '' %>>Aktif</option>
+                <option value="0" <%= purchase.request_activation ? '' : 'selected' %>>Non Aktif</option>
+              </select>
+            </div>
+          </div> -->
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Transaksi</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="transaction" name="transaction" disabled>
+                <% for (let trans of master) { %>
+                  <option value="<%= trans.id %>" <%= purchase.transactions === trans.id ? 'selected' : '' %>><%= trans.transactions %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Pcode</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="pcode" 
+                      name="pcode"
+                      value="<%= purchase.pcode %>"
+                      disabled />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Biller Code</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="biller_code" 
+                      name="biller_code"
+                      value="<%= purchase.biller_code %>"
+                      disabled />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Product Type</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="product_type" 
+                      name="product_type"
+                      value="<%= purchase.product_type %>"
+                      disabled />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Product Code</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="product_code" 
+                      name="product_code"
+                      value="<%= purchase.product_code %>"
+                      disabled />
+            </div>
+          </div>
+          
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">No. Rek</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                class="form-control" 
+                id="rek_number" 
+                name="rek_number"
+                value="<%= purchase.rek_number %>"
+                disabled />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Nama Rek</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="rek_name" 
+                      name="rek_name"
+                      value="<%= purchase.rek_name %>"
+                      disabled />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Format Ket</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="format" 
+                      name="format"
+                      value="<%= purchase.format %>"
+                      disabled />
+            </div>
+          </div>
+  
+          <br/>
+          <h4>Kotran Transaction</h4>
+          <hr/>
+  
+          <div class="container-fluid"> 
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Original</th>
+                  <th>Reversal</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>
+                    Debet
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="trans_debet_ori" 
+                            name="trans_debet_ori"
+                            value="<%= purchase.trans_debet_ori %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="trans_debet_rev" 
+                            name="trans_debet_rev"
+                            value="<%= purchase.trans_debet_rev %>"
+                            disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Kredit
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="trans_credit_ori" 
+                            name="trans_credit_ori"
+                            value="<%= purchase.trans_credit_ori %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="trans_credit_rev" 
+                            name="trans_credit_rev"
+                            value="<%= purchase.trans_credit_rev %>"
+                            disabled />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+  
+          <br/>
+          <h4>Kotran Fee</h4>
+          <hr/>
+
+          <div class="container-fluid"> 
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th class="col-md-1">Original</th>
+                  <th class="col-md-1">Reversal</th>
+                  <th class="col-md-1">Fee IB</th>
+                  <th class="col-md-1">Fee MB</th>
+                  <th class="col-md-1">Fee IBB</th>
+                  <th class="col-md-2">Rekening Penampung Fee</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>
+                    Kotran Fee Debet
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="fee_debet_ori" 
+                            name="fee_debet_ori" 
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_debet_ori %>" 
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_debet_rev" 
+                            name="fee_debet_rev" 
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_debet_rev %>" 
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_debet_ib" 
+                            name="fee_debet_ib"
+                            style="width: 130px !important;" 
+                            value="<%= purchase.fee_debet_ib %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_debet_mb" 
+                            name="fee_debet_mb" 
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_debet_mb %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_debet_ibb" 
+                            name="fee_debet_ibb" 
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_debet_ibb %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_debet_rek" 
+                            name="fee_debet_rek" 
+                            style="width: auto !important;"
+                            value="<%= purchase.fee_debet_rek %>"
+                            disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Kotran Fee Credit (1)
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_1_ori" 
+                            name="fee_credit_1_ori" 
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_credit_1_ori %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_1_rev" 
+                            name="fee_credit_1_rev" 
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_credit_1_rev %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_1_ib" 
+                            name="fee_credit_1_ib" 
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_credit_1_ib %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_1_mb" 
+                            name="fee_credit_1_mb" 
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_credit_1_mb %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_1_ibb" 
+                            name="fee_credit_1_ibb" 
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_credit_1_ibb %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_1_rek" 
+                            name="fee_credit_1_rek" 
+                            style="width: auto !important;"
+                            value="<%= purchase.fee_credit_1_rek %>"
+                            disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Kotran Fee Credit (2)
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_2_ori" 
+                            name="fee_credit_2_ori" 
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_credit_2_ori %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_2_rev" 
+                            name="fee_credit_2_rev" 
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_credit_2_rev %>" 
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_2_ib" 
+                            name="fee_credit_2_ib"
+                            value="<%= purchase.fee_credit_2_ib %>"
+                            style="width: 130px !important;" 
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_2_mb" 
+                            name="fee_credit_2_mb"
+                            value="<%= purchase.fee_credit_2_mb %>"
+                            style="width: 130px !important;" 
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_2_ibb" 
+                            name="fee_credit_2_ibb"
+                            value="<%= purchase.fee_credit_2_ibb %>"
+                            style="width: 130px !important;" 
+                            disabled />
+                  </td> 
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_2_rek" 
+                            name="fee_credit_2_rek"
+                            style="width: auto !important;" 
+                            value="<%= purchase.fee_credit_2_rek %>"
+                            disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Kotran Fee Credit (3)
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_3_ori" 
+                            name="fee_credit_3_ori"
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_credit_3_ori %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_3_rev" 
+                            name="fee_credit_3_rev"
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_credit_3_rev %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_3_ib" 
+                            name="fee_credit_3_ib"
+                            value="<%= purchase.fee_credit_3_ib %>"
+                            style="width: 130px !important;"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_3_mb" 
+                            name="fee_credit_3_mb"
+                            value="<%= purchase.fee_credit_3_mb %>"
+                            style="width: 130px !important;"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_3_ibb" 
+                            name="fee_credit_3_ibb"
+                            value="<%= purchase.fee_credit_3_ibb %>"
+                            style="width: 130px !important;"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_3_rek" 
+                            name="fee_credit_3_rek"
+                            style="width: auto !important;" 
+                            value="<%= purchase.fee_credit_3_rek %>"
+                            disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Kotran Fee Credit (4)
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_4_ori" 
+                            name="fee_credit_4_ori"
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_credit_4_ori %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_4_rev" 
+                            name="fee_credit_4_rev"
+                            style="width: 130px !important;" 
+                            value="<%= purchase.fee_credit_4_rev %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_4_ib" 
+                            name="fee_credit_4_ib"
+                            value="<%= purchase.fee_credit_4_ib %>"
+                            style="width: 130px !important;"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_4_mb" 
+                            name="fee_credit_4_mb"
+                            value="<%= purchase.fee_credit_4_mb %>"
+                            style="width: 130px !important;"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_4_ibb" 
+                            name="fee_credit_4_ibb"
+                            value="<%= purchase.fee_credit_4_ibb %>"
+                            style="width: 130px !important;"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_4_rek" 
+                            name="fee_credit_4_rek"
+                            style="width: auto !important;" 
+                            value="<%= purchase.fee_credit_4_rek %>"
+                            disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Kotran Fee Credit (5)
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_5_ori" 
+                            name="fee_credit_5_ori" 
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_credit_5_ori %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_5_rev" 
+                            name="fee_credit_5_rev" 
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_credit_5_rev %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_5_ib" 
+                            name="fee_credit_5_ib" 
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_credit_5_ib %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_5_mb" 
+                            name="fee_credit_5_mb" 
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_credit_5_mb %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_5_ibb" 
+                            name="fee_credit_5_ibb" 
+                            style="width: 130px !important;"
+                            value="<%= purchase.fee_credit_5_ibb %>"
+                            disabled />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="fee_credit_5_rek" 
+                            name="fee_credit_5_rek"
+                            style="width: auto !important;" 
+                            value="<%= purchase.fee_credit_5_rek %>"
+                            disabled />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="col-sm-12">
+            <a href="/fee" class="btn btn-secondary float-right mr-2">Kembali</a>
+          </div>
+      </form>
+      </div>
+      
+    </div>
+    
+
+  </div>
+  <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../../layout/footer/js.ejs'); %>
+
+<!-- Additional Js -->
+<script src="/js/sweetalert2.min.js"></script>
+
+<!-- Footer -->
+<%- include('../../layout/footer.ejs') %>

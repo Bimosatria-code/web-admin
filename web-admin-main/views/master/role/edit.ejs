@@ -1,0 +1,313 @@
+<form action="/update-role" method="post">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+    <input type="hidden" name="id" value="<%= id %>" />
+    <div class="form-group row">
+      <label for="staticEmail" class="col-sm-2 col-form-label">Role Name</label>
+      <div class="col-sm-10">
+        <input type="text" 
+          class="form-control" 
+          id="name" 
+          name="name"
+          value="<%= name %>"
+          placeholder="Role Name" required />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="staticEmail" class="col-sm-2 col-form-label">Description</label>
+      <div class="col-sm-10">
+        <textarea type="text" 
+          class="form-control" 
+          id="description" 
+          name="description"
+          placeholder="Description" required><%= description %></textarea>
+      </div>
+    </div>
+    <!-- Option Role -->
+    <div class="form-row">
+      <div class="col-3">
+        <label>Fee Management</label>
+        <div class="col-sm-7">
+          <p>Master Group Role</p>
+          <!-- checkbox -->
+          <div class="form-group">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="1" name="module" <%= previllage.includes(1) ? 'checked' : '' %> />
+              <label class="form-check-label">Read</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="2" name="module" <%= previllage.includes(2) ? 'checked' : '' %> />
+              <label class="form-check-label">Create</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="3" name="module" <%= previllage.includes(3) ? 'checked' : '' %> />
+              <label class="form-check-label">Edit</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="4" name="module" <%= previllage.includes(4) ? 'checked' : '' %> />
+              <label class="form-check-label">Delete</label>
+            </div>
+          </div>
+
+          <p>Master User</p>
+          <!-- checkbox -->
+          <div class="form-group">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="5" name="module" <%= previllage.includes(5) ? 'checked' : '' %> />
+              <label class="form-check-label">Read</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="6" name="module" <%= previllage.includes(6) ? 'checked' : '' %> />
+              <label class="form-check-label">Create</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="7" name="module" <%= previllage.includes(7) ? 'checked' : '' %> />
+              <label class="form-check-label">Edit</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="8" name="module" <%= previllage.includes(8) ? 'checked' : '' %> />
+              <label class="form-check-label">Delete</label>
+            </div>
+          </div>
+
+          <p>Master Setting Fee</p>
+            <!-- checkbox -->
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="9" name="module" <%= previllage.includes(9) ? 'checked' : '' %> />
+                <label class="form-check-label">Read</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="10" name="module" <%= previllage.includes(10) ? 'checked' : '' %> />
+                <label class="form-check-label">Create</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="11" name="module" <%= previllage.includes(11) ? 'checked' : '' %> />
+                <label class="form-check-label">Edit</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="12" name="module" <%= previllage.includes(12) ? 'checked' : '' %> />
+                <label class="form-check-label">Delete</label>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="col-3">
+        <label>Fee Management</label>
+        <div class="col-sm-7">
+          <p>Setting Fee</p>
+          <!-- checkbox -->
+          <div class="form-group">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="13" name="module" <%= previllage.includes(13) ? 'checked' : '' %> />
+              <label class="form-check-label">Read</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="14" name="module" <%= previllage.includes(14) ? 'checked' : '' %> />
+              <label class="form-check-label">View</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="15" name="module" <%= previllage.includes(15) ? 'checked' : '' %> />
+              <label class="form-check-label">Create</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="16" name="module" <%= previllage.includes(16) ? 'checked' : '' %> />
+              <label class="form-check-label">Edit</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="17" name="module" <%= previllage.includes(17) ? 'checked' : '' %> />
+              <label class="form-check-label">Delete</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="18" name="module" <%= previllage.includes(18) ? 'checked' : '' %> />
+              <label class="form-check-label">Submit</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="19" name="module" <%= previllage.includes(19) ? 'checked' : '' %> />
+              <label class="form-check-label">Approval</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="20" name="module" <%= previllage.includes(20) ? 'checked' : '' %> />
+              <label class="form-check-label">Reject</label>
+            </div>
+          </div>
+
+          <p>Master Plan Product</p>
+          <!-- checkbox -->
+          <div class="form-group">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="21" name="module" <%= previllage.includes(21) ? 'checked' : '' %> />
+              <label class="form-check-label">Read</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="22" name="module" <%= previllage.includes(22) ? 'checked' : '' %> />
+              <label class="form-check-label">Create</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="23" name="module" <%= previllage.includes(23) ? 'checked' : '' %> />
+              <label class="form-check-label">Edit</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="24" name="module" <%= previllage.includes(24) ? 'checked' : '' %> />
+              <label class="form-check-label">Delete</label>
+            </div>
+          </div>
+
+          <p>Master Campaign</p>
+          <!-- checkbox -->
+          <div class="form-group">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="25" name="module" <%= previllage.includes(25) ? 'checked' : '' %> />
+              <label class="form-check-label">Read</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="26" name="module" <%= previllage.includes(26) ? 'checked' : '' %> />
+              <label class="form-check-label">View</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="27" name="module" <%= previllage.includes(27) ? 'checked' : '' %> />
+              <label class="form-check-label">Create</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="28" name="module" <%= previllage.includes(28) ? 'checked' : '' %> />
+              <label class="form-check-label">Edit</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="29" name="module" <%= previllage.includes(29) ? 'checked' : '' %> />
+              <label class="form-check-label">Delete</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="30" name="module" <%= previllage.includes(30) ? 'checked' : '' %> />
+              <label class="form-check-label">Submit</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="31" name="module" <%= previllage.includes(31) ? 'checked' : '' %> />
+              <label class="form-check-label">Approval</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="32" name="module" <%= previllage.includes(32) ? 'checked' : '' %> />
+              <label class="form-check-label">Reject</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-3">
+        <label>Reporting</label>
+        <div class="col-sm-8">
+          <!-- checkbox -->
+          <div class="form-group">
+            <p>Laporan Customer IBMB</p>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="33" name="module" <%= previllage.includes(33) ? 'checked' : '' %> />
+              <label class="form-check-label">Read</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="34" name="module" <%= previllage.includes(34) ? 'checked' : '' %> />
+              <label class="form-check-label">Download Excel</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="35" name="module" <%= previllage.includes(35) ? 'checked' : '' %> />
+              <label class="form-check-label">Download Txt</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <p>Laporan Transaksi IBMB</p>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="36" name="module" <%= previllage.includes(36) ? 'checked' : '' %> />
+              <label class="form-check-label">Read</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="37" name="module" <%= previllage.includes(37) ? 'checked' : '' %> />
+              <label class="form-check-label">Download Excel</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="38" name="module" <%= previllage.includes(38) ? 'checked' : '' %> />
+              <label class="form-check-label">Download Txt</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <p>Laporan Transaksi Abnormal</p>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="49" name="module" <%= previllage.includes(49) ? 'checked' : '' %> />
+              <label class="form-check-label">Read</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="50" name="module" <%= previllage.includes(50) ? 'checked' : '' %> />
+              <label class="form-check-label">Download Excel</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="51" name="module" <%= previllage.includes(51) ? 'checked' : '' %> />
+              <label class="form-check-label">Download Txt</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <p>Parameter Setting</p>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="39" name="module" <%= previllage.includes(39) ? 'checked' : '' %> />
+              <label class="form-check-label">Read</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="40" name="module" <%= previllage.includes(40) ? 'checked' : '' %> />
+              <label class="form-check-label">Save</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-3">
+        <label>Log</label>
+        <div class="col-sm-11">
+          <div class="form-group">
+            <p>Laporan Log Transaksi</p>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="41" name="module" <%= previllage.includes(41) ? 'checked' : '' %> />
+              <label class="form-check-label">Read</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="42" name="module" <%= previllage.includes(42) ? 'checked' : '' %> />
+              <label class="form-check-label">Download Excel</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="43" name="module" <%= previllage.includes(43) ? 'checked' : '' %> />
+              <label class="form-check-label">Download Txt</label>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <p>Laporan Statistik Log Transaksi</p>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="44" name="module" <%= previllage.includes(44) ? 'checked' : '' %> />
+              <label class="form-check-label">Read</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="45" name="module" <%= previllage.includes(45) ? 'checked' : '' %> />
+              <label class="form-check-label">Download Excel</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="46" name="module" <%= previllage.includes(46) ? 'checked' : '' %> />
+              <label class="form-check-label">Download Txt</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <p>Audit Trails</p>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="47" name="module" <%= previllage.includes(47) ? 'checked' : '' %> />
+              <label class="form-check-label">Read</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="48" name="module" <%= previllage.includes(48) ? 'checked' : '' %> />
+              <label class="form-check-label">Download Excel</label>
+            </div>
+           <!--  <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="49" name="module" <%= previllage.includes(49) ? 'checked' : '' %> />
+              <label class="form-check-label">Download PDF</label>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+  </form>

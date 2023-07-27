@@ -1,0 +1,129 @@
+<div class="modal-body">
+	<form id="updateform" autocomplete="off">
+		<input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+		<input type="hidden" name="id" value="<%= id %>" />
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label">Transaksi</label>
+			<div class="col-sm-10">
+			<input type="text" 
+				class="form-control" 
+				id="transaksi"
+				name="transaksi"
+				value="<%= transactions %>"
+				placeholder="Transaksi"
+				minlength="1"
+				maxlength="40" 
+				required />
+			</div>
+		</div>
+		<div class="form-group row">
+		<label class="col-sm-2 col-form-label">Pcode</label>
+		<div class="col-sm-10">
+			<input type="text" 
+				class="form-control" 
+				id="p_code" 
+				name="p_code" 
+				value="<%= pcode %>"
+				placeholder="Pcode" 
+				minlength="6"
+				maxlength="6" 
+				readonly />
+			</div>
+		</div>
+		<div class="form-group row">
+		<label class="col-sm-2 col-form-label">Biller Code</label>
+			<div class="col-sm-10">
+			<input type="text" 
+				class="form-control"  
+				id="bill_code"
+				name="bill_code" 
+				value="<%= biller_code %>"
+				placeholder="Biller Code" 
+				minlength="4"
+				maxlength="4" readonly />
+			</div>
+		</div>
+		<div class="form-group row">
+		<label class="col-sm-2 col-form-label">Product Type</label>
+		<div class="col-sm-10">
+			<input type="text" 
+				class="form-control" 
+				id="pro_type"
+				name="pro_type" 
+				value="<%= product_type %>"
+				placeholder="Product Type" 
+				minlength="4"
+				maxlength="4" readonly />
+		</div>
+		</div>
+		<div class="form-group row">
+		<label class="col-sm-2 col-form-label">Product Code</label>
+		<div class="col-sm-10">
+			<input type="text" 
+				class="form-control"
+				id="pro_code"  
+				name="pro_code" 
+				value="<%= product_code %>"
+				placeholder="Product Code" 
+				minlength="4"
+				maxlength="4" readonly />
+			</div>
+		</div>
+
+		<div class="modal-footer">
+			<button type="submit" class="btn btn-primary">Save</button>
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		</div>
+	</form>
+</div>
+
+<script>
+	$(document).on('submit', '#updateform', function (event) {
+    event.preventDefault();
+
+		var id = $("input[name=id]").val();
+    	var transactions = $("input[name=transaksi]").val();
+   		var pcode = $("input[name=p_code]").val();
+		var biller_code = $("input[name=bill_code]").val();
+		var product_type = $("input[name=pro_type]").val();
+		var product_code = $("input[name=pro_code]").val();
+
+    var token = $("input[name=_csrf]").val();
+
+    $.ajax({
+      url: "/update-master-fee",
+      headers: {
+        'CSRF-Token': token // <-- is the csrf token as a header
+      },
+      data:{
+				id:id,
+        transactions:transactions,
+        pcode:pcode,
+				biller_code:biller_code,
+				product_type:product_type,
+				product_code:product_code
+      },
+      type:"POST",
+      success:function(response){
+        if (response.code == 200) {
+          Swal.fire(
+            response.label,
+            response.message,
+            response.status
+          ).then(nx => {
+						location.reload();
+					})
+        } else {
+          Swal.fire(
+            response.label,
+            response.message,
+            response.status
+          )
+        }
+      },
+      error: function(error) {
+        console.log(error);
+      }
+    });
+  });
+</script>

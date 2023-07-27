@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="csrf-token" content="<%= csrfToken %>">
+  <title>Web Admin</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="/css/ionicons.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+  <!-- Loader -->
+  <link href="/css/loader.css">
+  <link href="/css/buttons.dataTables.min.css">
+  
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <!-- Notifications Dropdown Menu -->
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="fas fa-th-large"></i>
+          <!-- <span class="badge badge-warning navbar-badge">15</span> -->
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <!-- <span class="dropdown-item dropdown-header">15 Notifications</span> -->
+          <a href="/profile/<%= sessionUser.id %>" class="dropdown-item">
+            <i class="fas fa-user"></i>
+            <span class="float-right text-muted text-sm">Profile</span>
+          </a>
+          <form action="/logout" method="post">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button type="submit" class="dropdown-item">
+              <i class="fas fa-power-off"></i>
+              <span class="float-right text-muted text-sm">Logout</span>
+            </button>
+        </form>
+        </div>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="index3.html" class="brand-link" style="text-align: center;">
+      <span class="brand-text font-weight-light">WEB ADMIN</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <!-- <li class="nav-item has-treeview menu-open">
+            <a href="/dashboard" class="nav-link <%= subpath === 'dashboard' ? 'active' : '' %>">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Dashboard
+              </p>
+            </a>
+          </li> -->
+          <% 
+            var user = previllage.includes(5); 
+            var role = previllage.includes(1); 
+            if (user || role) { 
+          %>
+          <li class="nav-item has-treeview <%= path === 'management' ? 'menu-open' : '' %>">
+            <a href="#" class="nav-link <%= path === 'management' ? 'active' : '' %>">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                User Management
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <% var user = previllage.includes(5); if (user) { %>
+              <li class="nav-item">
+                <a href="/user" class="nav-link <%= subpath === 'user' ? 'active' : '' %>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>User</p>
+                </a>
+              </li>
+              <% } %>
+              <% var role = previllage.includes(1); if (role) { %>
+              <li class="nav-item">
+                <a href="/role" class="nav-link <%= subpath === 'role' ? 'active' : '' %>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Role</p>
+                </a>
+              </li>
+              <% } %>
+            </ul>
+          </li>
+          <% } %>
+
+          <% 
+            var master = previllage.includes(9);
+            var setting = previllage.includes(13);
+
+            if (master || setting) { 
+          %>
+          <li class="nav-item has-treeview <%= path === 'setting' ? 'menu-open' : '' %>">
+            <a href="#" class="nav-link <%= path === 'setting' ? 'active' : '' %>">
+              <i class="nav-icon fas fa-money-check"></i>
+              <p>
+                Fee Management
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <% var role = previllage.includes(9); if (role) { %>
+              <li class="nav-item">
+                <a href="/master-fee" class="nav-link <%= subpath === 'master-fee' ? 'active' : '' %>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Master Fee</p>
+                </a>
+              </li>
+              <% } %>
+            </ul>
+            <ul class="nav nav-treeview">
+              <% var role = previllage.includes(13); if (role) { %>
+              <li class="nav-item">
+                <a href="/fee" class="nav-link <%= subpath === 'fee' ? 'active' : '' %>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Setting Fee</p>
+                </a>
+              </li>
+              <% } %>
+            </ul>
+          </li>
+          <% } %>
+
+          <!-- Reporting -->
+
+           <% 
+            var customer = previllage.includes(33);
+            var transaksi = previllage.includes(36);
+            var abnormal = previllage.includes(49);
+
+            if (customer || transaksi || abnormal) { 
+          %>
+          <li class="nav-item has-treeview <%= path === 'reporting' ? 'menu-open' : '' %>">
+            <a href="#" class="nav-link <%= path === 'reporting' ? 'active' : '' %>">
+              <i class="nav-icon fas fa-folder"></i>
+              <p>
+                Reporting
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <% var role = previllage.includes(33); if (role) { %>
+              <li class="nav-item">
+                <a href="/reporting/customer" class="nav-link <%= subpath === 'customer' ? 'active' : '' %>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Laporan Customer IBMB</p>
+                </a>
+              </li>
+              <% } %>
+            </ul>
+            <ul class="nav nav-treeview">
+              <% var role = previllage.includes(36); if (role) { %>
+              <li class="nav-item">
+                <a href="/reporting/transaksi" class="nav-link <%= subpath === 'transaksi' ? 'active' : '' %>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Laporan Transaksi IBMB</p>
+                </a>
+              </li>
+              <% } %>
+            </ul>
+            <ul class="nav nav-treeview">
+              <% var role = previllage.includes(49); if (role) { %>
+              <li class="nav-item">
+                <a href="/reporting/abnormal" class="nav-link <%= subpath === 'abnormal' ? 'active' : '' %>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Laporan Transaksi Abnormal</p>
+                </a>
+              </li>
+              <% } %>
+            </ul>
+          </li>
+          <% } %>
+
+          <% 
+            var campaign = previllage.includes(25); 
+            var plan = previllage.includes(21);
+
+            if (campaign || plan) { 
+          %>
+          <li class="nav-item has-treeview <%= path === 'campaign' ? 'menu-open' : '' %>">
+            <a href="#" class="nav-link <%= path === 'campaign' ? 'active' : '' %>">
+              <i class="nav-icon fas fa-bullhorn"></i>
+              <p>
+                Campaign Management
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <% var role = previllage.includes(21); if (role) { %>
+              <li class="nav-item">
+                <a href="/plan-product" class="nav-link <%= subpath === 'plan_product' ? 'active' : '' %>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Master Plan Product</p>
+                </a>
+              </li>
+              <% } %>
+            </ul>
+            <ul class="nav nav-treeview">
+              <% var campaign = previllage.includes(25); if (campaign) { %>
+              <li class="nav-item">
+                <a href="/campaign" class="nav-link <%= subpath === 'campaign' ? 'active' : '' %>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Setting Campaign</p>
+                </a>
+              </li>
+              <% } %>
+            </ul>
+          </li>
+          <% } %>
+
+          <!-- Log -->
+          <% 
+            var campaign = previllage.includes(25); 
+            var plan = previllage.includes(21);
+
+            if (campaign || plan) { 
+          %>
+
+          <% 
+            var transaksi = previllage.includes(41);
+            var statistik = previllage.includes(44);
+            var audit = previllage.includes(47);
+
+            if (transaksi || statistik ||audit ) { 
+          %>
+          <li class="nav-item has-treeview <%= path === 'log' ? 'menu-open' : '' %>">
+            <a href="#" class="nav-link <%= path === 'log' ? 'active' : '' %>">
+              <i class="nav-icon fas fa-file-alt"></i>
+              <p>
+                Log
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <% var transaksi= previllage.includes(41); if (transaksi) { %>
+              <li class="nav-item">
+                <a href="/log/transaksi" class="nav-link <%= subpath === 'transaksi' ? 'active' : '' %>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Laporan Transaksi</p>
+                </a>
+              </li>
+              <% } %>
+              <% var statistik = previllage.includes(44); if (statistik) { %>
+              <li class="nav-item">
+                <a href="/log/statistik" class="nav-link <%= subpath === 'statistik' ? 'active' : '' %>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Laporan Statistik</p>
+                </a>
+              </li>
+              <% } %>
+              <% var audit = previllage.includes(47); if (audit) { %>
+              <li class="nav-item">
+                <a href="/log/audit-trails" class="nav-link <%= subpath === 'audit' ? 'active' : '' %>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Audit Trails</p>
+                </a>
+              </li>
+              <% } %>
+            </ul>
+          </li>
+          <% } %>
+          
+<% } %>
+          <!-- Parameter Setting Just For ADMIN -->
+          <% var role = previllage.includes(39); if (role) { %>
+          <li class="nav-item">
+            <a href="/setting" class="nav-link <%= subpath === 'parameter' ? 'active' : '' %>">
+              <i class="nav-icon fas fa-tools"></i>
+              <p>
+                Parameter Setting
+              </p>
+            </a>
+          </li>
+          <% } %>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>

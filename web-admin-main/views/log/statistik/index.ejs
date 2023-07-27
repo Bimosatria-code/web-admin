@@ -1,0 +1,259 @@
+<!-- Header -->
+<%- include('../../layout/header.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Laporan Log Statistik</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Laporan Log Statistik</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+ <!-- Main content -->
+ <section class="content">
+  <% if (errorMessage) { %>
+    <div class="alert alert-warning" role="alert">
+      <%= errorMessage %>
+    </div>
+  <% } %>
+  <div class="container">
+    <form method="post" action="/log/filter-statistik">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-row">
+            <div class="form-group col-md-5">
+              <label for="inputPassword4">Bulan</label>
+              <select class="form-control" id="from" name="from">
+                <option value="">Select</option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+            </div>
+            <div class="form-group col-md-5">
+              <label for="inputPassword4">S.d</label>
+              <select class="form-control" id="to" name="to">
+                <option value="">Select</option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-5">
+              <label for="inputEmail4">Tahun</label>
+              <input type="text" 
+                     class="form-control" 
+                     id="year" 
+                     name="year" 
+                     max="4" 
+                     maxlength="4" 
+                     onkeypress='validate(event)' />
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-info"><i class="fas fa-search"></i> Retrive</button>
+    </form>
+  </div>
+  <br/>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <!-- /.card-header -->
+          <div class="card-body">
+            <% var xls = previllage.includes(45); if (xls) { %>
+            <button class="btn btn-success excel"><i class="fas fa-file-excel"></i> XLS</button>
+            <% } %>
+            <% var xls = previllage.includes(46); if (xls) { %>
+            <button class="btn btn-secondary txt"><i class="fas fa-file-alt"></i> TXT</button>
+            <% } %>
+            <table id="example1" class="table table-bordered table-striped" style="font-size: 1rem;">
+              <thead>
+              <tr>
+                <th rowspan="2" style="vertical-align: middle; text-align: center;">Jenis Transaksi</th>
+                <th colspan="2" style="text-align: center;">Status Sukses</th>
+                <th colspan="2" style="text-align: center;">Status Gagal</th>
+              </tr>
+              <tr>
+                <th scope="col" style="text-align: center;">Jumlah Data</th>
+                <th scope="col" style="text-align: center;">Total Nominal</th>
+                <th scope="col" style="text-align: center;">Jumlah Data</th>
+                <th scope="col" style="text-align: center;">Total Nominal</th>
+              </tr>
+              </thead>
+              <tbody>
+                <% for (let el of data) { %>
+                  <tr>
+                    <td><%= el.transactions %></td>
+                    <td><%= el.sukses %></td>
+                    <td><%= el.total_sukses %></td>
+                    <td><%= el.gagal %></td>
+                    <td><%= el.total_gagal %></td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Role</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../../layout/footer/js.ejs'); %>
+
+<!-- Additional Js -->
+<script src="/js/sweetalert2.min.js"></script>
+<script>
+  $('#example1').DataTable({
+    paging: false,
+    ordering: false,
+    info: false,
+    searching: false,
+  });
+
+  // handle only can input number
+  function validate(evt) {
+    var theEvent = evt || window.event;
+
+    // Handle paste
+    if (theEvent.type === 'paste') {
+        key = event.clipboardData.getData('text/plain');
+    } else {
+    // Handle key press
+        var key = theEvent.keyCode || theEvent.which;
+        key = String.fromCharCode(key);
+    }
+    var regex = /[0-9]|\./;
+    if( !regex.test(key) ) {
+      theEvent.returnValue = false;
+      if(theEvent.preventDefault) theEvent.preventDefault();
+    }
+  }
+
+  // DOWNLOAD EXCEL
+  $('.excel').click(function(){
+    var from = "<%= from %>";
+    var to = "<%= to %>";
+    var year = "<%= year %>";
+
+    const param = {from: from, to: to, year: year}
+
+    Swal.fire({
+      title: 'Are you sure want to download?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        $.get("/log/excel-statistik", param, function (response) {
+          if (response.code === 404) {
+            location.reload();
+          } else {
+            window.location="/log/xls";
+          }
+        });
+      } else {
+        location.reload();
+      }
+    });
+  });
+
+
+  // DOWNLOAD TXT
+  $('.txt').click(function(){
+    var from = "<%= from %>";
+    var to = "<%= to %>";
+    var year = "<%= year %>";
+
+    const param = {from: from, to: to, year: year}
+
+    Swal.fire({
+      title: 'Are you sure want to download?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        $.get("/log/txt-statistik", param, function (response) {
+          if (response.code === 404) {
+            location.reload();
+          } else {
+            window.location="/log/text"
+          }
+        });
+      } else {
+        location.reload();
+      }
+    });
+  });
+</script>
+<!-- Footer -->
+
+<%- include('../../layout/footer.ejs') %>
+

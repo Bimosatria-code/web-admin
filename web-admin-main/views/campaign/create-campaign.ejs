@@ -1,0 +1,807 @@
+<!-- Header -->
+<%- include('../layout/header.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Setting Campaign</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Setting Campaign</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-body">
+          <!-- <button class="btn btn-primary reload">Reload</button>
+          <hr> -->
+          <form id="formCampaign" autocomplete="off">
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Group Trx</label>
+              <div class="col-sm-3">
+                <select class="form-control" id="group_trx" name="group_trx" required>
+                  <option value="">Select</option>
+                  <option value="1">Purchase & Bill</option>
+                  <option value="2">Transfer Dana</option>
+                  <option value="3">Inquiry</option>
+                </select>
+              </div>
+            </div>
+             <div class="form-group row drop-down-show-hide" id="1">
+              <label class="col-sm-2 col-form-label">Transaksi</label>
+              <div class="col-sm-3">
+                <select class="form-control" id="transaction_p" name="transaction_p" >
+                  <% for (let p of purchase) { %>
+                    <option value="<%= p.transactions_id %>"><%= p.transactions %></option>
+                  <% } %>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row drop-down-show-hide" id="2">
+              <label class="col-sm-2 col-form-label">Transaksi</label>
+              <div class="col-sm-3">
+                <select class="form-control" id="transaction_td" name="transaction_td" >
+                  <% for (let td of transfer_dana) { %>
+                    <option value="<%= td.transactions_id %>"><%= td.transactions %></option>
+                  <% } %>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row drop-down-show-hide" id="3">
+              <label class="col-sm-2 col-form-label">Transaksi</label>
+              <div class="col-sm-3">
+                <select class="form-control" id="transaction_i" name="transaction_i" >
+                  <% for (let i of inquiry) { %>
+                    <option value="<%= i.transactions_id %>"><%= i.transactions %></option>
+                  <% } %>
+                </select>
+              </div>
+            </div>
+ 
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Start Period</label>
+              <div class="col-sm-3">
+                <input type="date" class="form-control" id="start_periode" name="start_periode" />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">End Periode</label>
+              <div class="col-sm-3">
+                <input type="date" class="form-control" id="end_periode" name="end_periode" />
+              </div>
+            </div>
+
+            <hr />
+            <fieldset class="border p-2">
+              <legend class="w-auto">Campaign Online On Boarding</legend>
+              <div class="container-fluid">
+                <table class="table table-bordered" style="width:100%" id="COOB">
+                  <thead>
+                    <tr>
+                      <th style="text-align: center;"><label>Opening Account</label></th>
+                      <th style="text-align: center;"><label>Plan Code</label></th>
+                      <th style="text-align: center;"><label>Plan Desc</label></th>
+                      <th style="text-align: center;"><label>Duration (Mount)</label></th>
+                      <th style="text-align: center;"><label>Min. Transaksi</label></th>
+                      <th style="text-align: center;"><label>Max. Transaksi</label></th>
+                      <th style="text-align: center;"><label>Jumlah Trx (s.d kali)</label></th>
+                      <th style="text-align: center;"><label>IB</label></th>
+                      <th style="text-align: center;"><label>MB</label></th>
+                      <th style="text-align: center;"><label>IBB</label></th>
+                      <th style=""></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                  </tbody>
+                </table>
+                <a href="javascript:void(0)" onclick="addRowCOOB()" class="btn btn-success">Add</span></a>
+              </div>
+            </fieldset>
+            <br/>
+
+            <hr/>
+            <fieldset class="border p-2">
+              <legend class="w-auto">Campaign By Saldo</legend>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="opt_1" id="opt_1" value="1" checked>
+                <label class="form-check-label" for="opt_1">
+                  By Total AUM
+                </label>
+              </div>
+              <div class="container-fluid">
+                <table class="table table-bordered" style="width:100%" id="aum">
+                  <thead>
+                    <tr>
+                      <th style="text-align: center;"><label>Range Saldo Awal</label></th>
+                      <th style="text-align: center;"><label>Range Saldo Akhir</label></th>
+                      <th style="text-align: center;"><label>Min. Transaksi</label></th>
+                      <th style="text-align: center;"><label>Max. Transaksi</label></th>
+                      <th style="text-align: center;"><label>Jumlah Trx (s.d kali)</label></th>
+                      <th style="text-align: center;"><label>IB</label></th>
+                      <th style="text-align: center;"><label>MB</label></th>
+                      <th style="text-align: center;"><label>IBB</label></th>
+                      <th style=""></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                  </tbody>
+                </table>
+                <a href="javascript:void(0)" onclick="addRowAum()" class="btn btn-success">Add</span></a>
+              </div>
+              <hr/><br/>
+              <div class="form-check">
+              <input class="form-check-input" type="radio" name="opt_1" id="opt_1" value="2">
+              <label class="form-check-label" for="opt_1">
+                By Plan Product
+              </label>
+            </div>              
+              <div class="container-fluid">
+                <table class="table table-bordered" style="width:100%" id="planProduct">
+                  <thead>
+                    <tr>
+                      <th style="text-align: center;"><label>Opening Account</label></th>
+                      <th style="text-align: center;"><label>Plan Code</label></th>
+                      <th style="text-align: center;"><label>Plan Desc</label></th>
+                      <th style="text-align: center;"><label>Min. Transaksi</label></th>
+                      <th style="text-align: center;"><label>Max. Transaksi</label></th>
+                      <th style="text-align: center;"><label>Jumlah Trx (s.d kali)</label></th>
+                      <th style="text-align: center;"><label>IB</label></th>
+                      <th style="text-align: center;"><label>MB</label></th>
+                      <th style="text-align: center;"><label>IBB</label></th>
+                      <th style=""></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                  </tbody>
+                </table>
+                <a href="javascript:void(0)" onclick="addRowPlanProduct()" class="btn btn-success">Add</span></a>
+              </div>
+            </fieldset>
+            <br/>
+
+            <h4>Campaign Fee</h4>
+            <hr />
+            <div class="container-fluid">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Nasabah</th>
+                    <th>Subsidi Bank</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>Biaya Admin</th>
+                    <td>
+                      <input type="text" id="fee_adm_nasabah" name="fee_adm_nasabah" minlength="1"  maxlength="18" value="0.00" onkeyup="cal_admin()"onkeypress='validate(event)' />
+                    </td>
+                    <td>
+                      <input type="text" id="fee_adm_subsidi" name="fee_adm_subsidi" minlength="1"  maxlength="18" onkeyup="cal_admin()"value="0.00" />
+                    </td>
+                    <td>
+                      <input type="text" id="total_fee_adm" name="total_fee_adm" onkeyup="cal_admin()" value="0.00" disabled />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Kotran Original</th>
+                    <td>
+                      <input type="text" id="nasabah_kotran_ori" name="nasabah_kotran_ori" minlength="4" maxlength="4" onkeypress='validate(event)' />
+                    </td>
+                    <td>
+                      <input type="text" id="subsidi_kotran_ori" name="subsidi_kotran_ori" minlength="4" maxlength="4" onkeypress='validate(event)' />
+                    </td>
+                    <td>
+                      <input type="text" id="total_kotran_ori" name="total_kotran_ori" minlength="4" maxlength="4" onkeypress='validate(event)' />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Kotran Reversal</th>
+                    <td>
+                      <input type="text" id="nasabah_kotran_reversal" name="nasabah_kotran_reversal" minlength="4" maxlength="4" onkeypress='validate(event)' />
+                    </td>
+                    <td>
+                      <input type="text" id="subsidi_kotran_reversal" name="subsidi_kotran_reversal" minlength="4" maxlength="4" onkeypress='validate(event)' />
+                    </td>
+                    <td>
+                      <input type="text" id="total_kotran_reversal" name="total_kotran_reversal" minlength="4" maxlength="4" onkeypress='validate(event)' />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <br />
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Account By Admin</label>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" id="account_admin" name="account_admin" minlength="1" maxlength="11" />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Account By Subsidi Bank</label>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" id="account_subsidi_bank" name="account_subsidi_bank" minlength="1" maxlength="11" />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Rekening Penampungan Fee</label>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" id="rek_number_penampung" name="rek_number_penampung" minlength="10" maxlength="11"  onkeypress='validate(event)' />
+              </div>
+            </div>
+            <br />
+
+            <div class="col-sm-12">
+              <a href="/campaign" class="btn btn-secondary float-right mr-2">Kembali</a>
+              <button type="submit" class="btn btn-primary float-right mr-2">Save</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+
+
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../layout/footer/js.ejs'); %>
+
+<!-- Additional Js -->
+<script src="/js/sweetalert2.min.js"></script>
+<!-- <script src="/js/additional/campaign/campaign.js"></script> -->
+<script>
+  $('.drop-down-show-hide').hide();
+  $('#group_trx').change(function () {
+    $('.drop-down-show-hide').hide()
+    $('#' + this.value).show();
+  }); 
+ 
+  function cal_admin(){
+    var fee_adm_nasabah=Number($("#fee_adm_nasabah").val().replace(/\,/g,''));
+    var fee_adm_subsidi=Number($("#fee_adm_subsidi").val().replace(/\,/g,''));
+
+    $("#total_fee_adm").val((fee_adm_nasabah + fee_adm_subsidi) + '.00');  
+  }
+
+  // document.getElementById("trx_id_debet_1").onblur = function () {    
+  //   this.value = parseFloat(this.value.replace(/,/g, ""))
+  //                   .toFixed(2)
+  //                   .toString()
+  //                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  // }
+
+  // document.getElementById("trx_mb_debet_1").onblur = function () {    
+  //   this.value = parseFloat(this.value.replace(/,/g, ""))
+  //                   .toFixed(2)
+  //                   .toString()
+  //                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  // }
+
+  // document.getElementById("avg_saldo").onblur = function () {    
+  //   this.value = parseFloat(this.value.replace(/,/g, ""))
+  //                   .toFixed(2)
+  //                   .toString()
+  //                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  // }
+  // document.getElementById("fee_acc_2").onblur = function () {    
+  //   this.value = parseFloat(this.value.replace(/,/g, ""))
+  //                   .toFixed(2)
+  //                   .toString()
+  //                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  // }
+  // document.getElementById("fee_acc_3").onblur = function () {    
+  //   this.value = parseFloat(this.value.replace(/,/g, ""))
+  //                   .toFixed(2)
+  //                   .toString()
+  //                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  // }
+
+  // document.getElementById("trx_ibb_debet_1").onblur = function () {    
+  //   this.value = parseFloat(this.value.replace(/,/g, ""))
+  //                   .toFixed(2)
+  //                   .toString()
+  //                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  // }  
+ 
+  function addRowAum() {
+    var table = document.getElementById('aum');
+    var baris = table.getElementsByTagName("tr").length;
+    var row = '<tr class="rowAdd_' + baris + '">' +
+      '<td><input class="form-control" type="text" name="start_range_saldo_aum" id="start_range_saldo_aum"></td>' +
+      '<td><input class="form-control" type="text" name="end_range_saldo_aum" id="end_range_saldo_aum" ></td>' +
+      '<td><input class="form-control" type="text" name="min_trx_aum" id="min_trx_aum" ></td>' +
+      '<td><input class="form-control" type="text" name="max_trx_aum" id="max_trx_aum" ></td>' +
+      '<td ><input class="form-control" type="text" name="qty_trx_aum" id="qty_trx_aum" ></td>' +
+      '<td><input type="checkbox" value="1" name="ib_aum" id="ib_aum" ></td>' +
+      '<td><input type="checkbox" value="1" name="mb_aum" id="mb_aum" ></td>' +
+      '<td><input type="checkbox" value="1" name="ibb_aum" id="ibb_aum" ></td>' +
+      '<td><button onclick="deleteRowAum(' + baris +
+      ')" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fa fa-trash"></i></button></td>' +
+      '</tr>'
+    $('#aum').append(row);
+  }
+
+  function addRowCOOB() {
+    var table = document.getElementById('COOB');
+    var baris = table.getElementsByTagName("tr").length;
+    var row = '<tr class="rowCoob_' + baris + '">' +
+      '<td><input class="form-control" type="text" name="open_account" id="open_account_'+baris+'" ></td>' +
+      '<td><input class="form-control" type="text" name="plan_code" id="plan_code_'+baris+'" ></td>' +
+      '<td>' +
+      '<select  name="plan_desc" id="plan_desc" class="form-control" onChange="select_plan_desc_coob(this, '+baris+')">' +
+      '<option value="" > - Select - </option>' +
+      '<% for (let data of plan_product) { %>'+
+        '<option  value="<%= data.id  %>"><%= data.plan_desc %></option>' +
+      '<% } %>'+
+      '</select>' +
+      '</td>' +
+      '<td style="text-align: center;"><input class="form-control" type="text" name="durations" id="durations" ></td>' +
+      '<td style="text-align: center;"><input class="form-control" type="text" name="min_trx" id="min_trx" ></td>' +
+      '<td style="text-align: center;"><input class="form-control" type="text" name="max_trx" id="max_trx" ></td>' +
+      '<td style="text-align: center;"><input class="form-control" type="text" name="qty_trx" id="qty_trx" ></td>' +
+      '<td style="text-align: center;"><input type="checkbox" value="1" name="ib" id="ib" ></td>' +
+      '<td style="text-align: center;"><input type="checkbox" value="1" name="mb" id="mb" ></td>' +
+      '<td style="text-align: center;"><input type="checkbox" value="1" name="ibb" id="ibb" ></td>' +
+      '<td><button onclick="deleteRowCoob(' + baris +
+      ')" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fa fa-trash"></i></button></td>' +
+      '</tr>'
+    $('#COOB').append(row);
+  }
+
+  function addRowPlanProduct() {
+    var table = document.getElementById('planProduct');
+    var baris = table.getElementsByTagName("tr").length;
+    var row = '<tr class="rowProduct_' + baris + '">' +
+      '<td><input class="form-control" type="text" name="open_account_product" id="open_account_product_'+baris+'" ></td>' +
+      '<td><input class="form-control" type="text" name="plan_code_product" id="plan_code_product_'+baris+'" ></td>' +
+      '<td>' +
+      '<select  name="plan_desc_product" id="plan_desc_product" class="form-control" onChange="select_plan_desc_product(this, '+baris+')">' +
+      '<option value="" > - Select - </option>' +
+      '<% for (let data of plan_product) { %>'+
+        '<option  value="<%= data.id  %>"><%= data.plan_desc %></option>' +
+      '<% } %>'+
+      '</select>' +
+      '</td>' +
+      '<td style="text-align: center;"><input class="form-control" type="text" name="min_trx_product" id="min_trx_product" ></td>' +
+      '<td style="text-align: center;"><input class="form-control" type="text" name="max_trx_product" id="max_trx_product" ></td>' +
+      '<td style="text-align: center;"><input class="form-control" type="text" name="qty_trx_product" id="qty_trx_product" ></td>' +
+      '<td style="text-align: center;"><input type="checkbox" value="1" name="ib_product" id="ib_product" ></td>' +
+      '<td style="text-align: center;"><input type="checkbox" value="1" name="mb_product" id="mb_product" ></td>' +
+      '<td style="text-align: center;"><input type="checkbox" value="1" name="ibb_product" id="ibb_product" ></td>' +
+      '<td><button onclick="deleteRowplanProduct(' + baris +
+      ')" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fa fa-trash"></i></button></td>' +
+      '</tr>'
+    $('#planProduct').append(row);
+  }
+
+  function select_plan_desc_coob(cell, baris){
+    var list = JSON.parse(localStorage.getItem("list_coob")) === null ? [] : JSON.parse(localStorage.getItem("list_coob"));
+
+    if(list !== null) {
+      for (let i = 0; i < list.length; i++) {
+        if(list[i].value === cell.value) {
+          deleteRowCoob(baris);
+
+          return Swal.fire(
+            'error',
+            'Data has been used',
+            'error'
+          )
+        }
+      }
+    } else {
+      localStorage.setItem("list_coob", []);
+    }
+
+    var id = cell.value;
+
+    list.push({'baris':baris, 'value': id})
+    localStorage.setItem("list_coob", JSON.stringify(list));
+
+    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    
+    $.ajax({
+      url: "/select-plan-product/"+ id,
+      headers: {
+        'CSRF-Token': token // <-- is the csrf token as a header
+      },
+      type: "GET",
+      success: function (response) {
+        document.getElementById("plan_code_"+baris).value = response.data;
+      },
+      error: function (error) {
+        console.log(error);
+      }
+    });
+  }
+
+  function select_plan_desc_product(cell, baris){
+    var list = JSON.parse(localStorage.getItem("list_product")) === null ? [] : JSON.parse(localStorage.getItem("list_product"));
+
+    if(list !== null) {
+      for (let i = 0; i < list.length; i++) {
+        if(list[i].value === cell.value) {
+          deleteRowCoob(baris);
+
+          return Swal.fire(
+            'error',
+            'Data has been used',
+            'error'
+          )
+        }
+      }
+    } else {
+      localStorage.setItem("list_product", []);
+    }
+
+    var id = cell.value;
+
+    list.push({'baris':baris, 'value': id})
+    localStorage.setItem("list_product", JSON.stringify(list));
+
+    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    
+    $.ajax({
+      url: "/select-plan-product/"+ id,
+      headers: {
+        'CSRF-Token': token // <-- is the csrf token as a header
+      },
+      type: "GET",
+      success: function (response) {
+        document.getElementById("plan_code_product_"+baris).value = response.data;
+      },
+      error: function (error) {
+        console.log(error);
+      }
+    });
+  }
+
+  function deleteRowplanProduct(baris) {
+    var list = JSON.parse(localStorage.getItem("list_product")) ?? [];
+
+    var new_list = list.filter(function( obj ) {
+      return obj.baris !== baris;
+    });
+    
+    localStorage.setItem("list_product", JSON.stringify(new_list));
+
+    $('.rowProduct_' + baris + '').remove();
+    baris--;
+  }
+
+  function deleteRowCoob(baris) {
+    var list = JSON.parse(localStorage.getItem("list_coob")) ?? [];
+
+    var new_list = list.filter(function( obj ) {
+      return obj.baris !== baris;
+    });
+    
+    localStorage.setItem("list_coob", JSON.stringify(new_list));
+
+    $('.rowCoob_' + baris + '').remove();
+    baris--;
+  }
+
+  function deleteRowAum(baris) {
+    $('.rowAdd_' + baris + '').remove();
+    baris--;
+  }
+
+  function validate(evt) {
+    var theEvent = evt || window.event;
+
+    // Handle paste
+    if (theEvent.type === 'paste') {
+        key = event.clipboardData.getData('text/plain');
+    } else {
+    // Handle key press
+        var key = theEvent.keyCode || theEvent.which;
+        key = String.fromCharCode(key);
+    }
+    var regex =/[0-9]|\./;
+    if( !regex.test(key) ) {
+      theEvent.returnValue = false;
+      if(theEvent.preventDefault) theEvent.preventDefault();
+    }
+  }
+
+  $('#formCampaign').submit(function (e) {
+    e.preventDefault();
+
+    let group_trx = $('#group_trx').val();
+    var trans;
+
+    if (group_trx == 1) {
+      trans = $('#transaction_p').val();
+    }
+    if (group_trx == 2) {
+      trans = $('#transaction_td').val();
+    }
+    if (group_trx == 3) {
+      trans = $('#transaction_i').val();
+    }
+    
+    let transaction = trans;
+    
+    let start_periode = $("input[name=start_periode]").val();
+    let end_periode = $("input[name=end_periode]").val();
+
+    let open_account = [];
+    $("input[name=open_account]").each(function() { open_account.push($(this).val()); });
+
+    let plan_code = [];
+    $("input[name=plan_code]").each(function(){ plan_code.push($(this).val()) });
+
+    let plan_desc = [];
+    $("select[name=plan_desc]").each(function(){ plan_desc.push($(this).val()) });
+
+    let durations = [];
+    $("input[name=durations]").each(function(){ durations.push($(this).val()) });
+
+    let min_trx = [];
+    $("input[name=min_trx]").each(function(){ min_trx.push($(this).val()) });
+
+    let max_trx = [];
+    $("input[name=max_trx]").each(function(){ max_trx.push($(this).val()) });
+
+    let qty_trx = [];
+    $("input[name=qty_trx]").each(function(){ qty_trx.push($(this).val()) });
+
+    let ib = [];
+    $("input[name=ib]:checkbox").each(function () {
+      var ischecked = $(this).is(":checked");
+      if (ischecked) {
+        ib.push($(this).val())
+      }else{
+        ib.push(0)
+      }
+    });
+
+    let mb = [];
+    $("input[name=mb]:checkbox").each(function () {
+      var ischecked = $(this).is(":checked");
+      if (ischecked) {
+        mb.push($(this).val())
+      }else{
+        mb.push(0)
+      }
+    });
+
+    let ibb = [];
+    $("input[name=ibb]:checkbox").each(function () {
+      var ischecked = $(this).is(":checked");
+      if (ischecked) {
+        ibb.push($(this).val())
+      }else{
+        ibb.push(0)
+      }
+    });
+    
+    let options = $("input[name=opt_1 ]").val();
+
+    let start_range_saldo_aum = [];
+    $("input[name=start_range_saldo_aum]").each(function() { start_range_saldo_aum.push($(this).val()); });
+
+    let end_range_saldo_aum = [];
+    $("input[name=end_range_saldo_aum]").each(function() { end_range_saldo_aum.push($(this).val()); });
+
+    let min_trx_aum = [];
+    $("input[name=min_trx_aum]").each(function() { min_trx_aum.push($(this).val()); });
+
+    let max_trx_aum = [];
+    $("input[name=max_trx_aum]").each(function() { max_trx_aum.push($(this).val()); });
+
+    let qty_trx_aum = [];
+    $("input[name=qty_trx_aum]").each(function() { qty_trx_aum.push($(this).val()); });
+
+    let ib_aum = [];
+    $("input[name=ib_aum]:checkbox").each(function () {
+      var ischecked = $(this).is(":checked");
+      if (ischecked) {
+        ib_aum.push($(this).val())
+      }else{
+        ib_aum.push(0)
+      }
+    });
+
+    let mb_aum = [];
+    $("input[name=mb_aum]:checkbox").each(function () {
+      var ischecked = $(this).is(":checked");
+      if (ischecked) {
+        mb_aum.push($(this).val())
+      }else{
+        mb_aum.push(0)
+      }
+    });
+
+    let ibb_aum = [];
+    $("input[name=ibb_aum]:checkbox").each(function () {
+      var ischecked = $(this).is(":checked");
+      if (ischecked) {
+        ibb_aum.push($(this).val())
+      }else{
+        ibb_aum.push(0)
+      }
+    });
+
+    let open_account_product = [];
+    $("input[name=open_account_product]").each(function() { open_account_product.push($(this).val()); });
+
+    let plan_code_product = [];
+    $("input[name=plan_code_product]").each(function() { plan_code_product.push($(this).val()); });
+
+    let plan_desc_product = [];
+    $("input[name=plan_desc_product]").each(function() { plan_desc_product.push($(this).val()); });
+
+    let min_trx_product = [];
+    $("input[name=min_trx_product]").each(function() { min_trx_product.push($(this).val()); });
+
+    let max_trx_product = [];
+    $("input[name=max_trx_product]").each(function() { max_trx_product.push($(this).val()); });
+
+    let qty_trx_product = [];
+    $("input[name=qty_trx_product]").each(function() { qty_trx_product.push($(this).val()); });
+
+    let ib_product = [];
+    $("input[name=ib_product]:checkbox").each(function () {
+      var ischecked = $(this).is(":checked");
+      if (ischecked) {
+        ib_product.push($(this).val())
+      }else{
+        ib_product.push(0)
+      }
+    });
+
+    let mb_product = [];
+    $("input[name=mb_product]:checkbox").each(function () {
+      var ischecked = $(this).is(":checked");
+      if (ischecked) {
+        mb_product.push($(this).val())
+      }else{
+        mb_product.push(0)
+      }
+    });
+
+    let ibb_product = [];
+    $("input[name=ibb_product]:checkbox").each(function () {
+      var ischecked = $(this).is(":checked");
+      if (ischecked) {
+        ibb_product.push($(this).val())
+      }else{
+        ibb_product.push(0)
+      }
+    });
+
+    let fee_adm_nasabah = $("input[name=fee_adm_nasabah]").val();
+    let fee_adm_subsidi = $("input[name=fee_adm_subsidi]").val();
+    let total_fee_adm = $("input[name=total_fee_adm]").val();
+
+    let nasabah_kotran_ori = $("input[name=nasabah_kotran_ori ]").val();
+    let subsidi_kotran_ori = $("input[name=subsidi_kotran_ori ]").val();
+    let total_kotran_ori = $("input[name=total_kotran_ori ]").val();
+
+    let nasabah_kotran_reversal = $("input[name=nasabah_kotran_reversal ]").val();
+    let subsidi_kotran_reversal = $("input[name=subsidi_kotran_reversal ]").val();
+    let total_kotran_reversal = $("input[name=total_kotran_reversal ]").val();
+
+    let account_admin = $("input[name=account_admin ]").val();
+    let account_subsidi_bank = $("input[name=account_subsidi_bank ]").val();
+    let rek_number_penampung = $("input[name=rek_number_penampung ]").val();
+
+    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    $.ajax({
+      url: "/create-campaign",
+      headers: {
+        'CSRF-Token': token // <-- is the csrf token as a header
+      },
+      data: {
+        transaction: transaction,
+        group_trx: group_trx,
+        start_periode: start_periode,
+        end_periode: end_periode,
+
+        open_account: JSON.stringify(open_account),
+        plan_code: JSON.stringify(plan_code),
+        plan_desc: JSON.stringify(plan_desc),
+        durations: JSON.stringify(durations),
+        min_trx: JSON.stringify(min_trx),
+        max_trx: JSON.stringify(max_trx),
+        qty_trx: JSON.stringify(qty_trx),
+        ib: JSON.stringify(ib),
+        mb: JSON.stringify(mb),
+        ibb: JSON.stringify(ibb),
+
+        options: options,
+
+        start_range_saldo_aum: JSON.stringify(start_range_saldo_aum),
+        end_range_saldo_aum: JSON.stringify(end_range_saldo_aum),
+        min_trx_aum: JSON.stringify(min_trx_aum),
+        max_trx_aum: JSON.stringify(max_trx_aum),
+        qty_trx_aum: JSON.stringify(qty_trx_aum),
+        ib_aum: JSON.stringify(ib_aum),
+        mb_aum: JSON.stringify(mb_aum),
+        ibb_aum: JSON.stringify(ibb_aum),
+
+        open_account_product: JSON.stringify(open_account_product),
+        plan_code_product: JSON.stringify(plan_code_product),
+        plan_desc_product: JSON.stringify(plan_desc_product),
+        min_trx_product: JSON.stringify(min_trx_product),
+        max_trx_product: JSON.stringify(max_trx_product),
+        qty_trx_product: JSON.stringify(qty_trx_product),
+        ib_product: JSON.stringify(ib_product),
+        mb_product: JSON.stringify(mb_product),
+        ibb_product: JSON.stringify(ibb_product),
+
+        fee_adm_nasabah : fee_adm_nasabah,
+        fee_adm_subsidi : fee_adm_subsidi,
+        total_fee_adm : total_fee_adm,
+
+        nasabah_kotran_ori : nasabah_kotran_ori,
+        subsidi_kotran_ori : subsidi_kotran_ori, 
+        total_kotran_ori : total_kotran_ori,
+
+        nasabah_kotran_rev : nasabah_kotran_reversal,
+        subsidi_kotran_rev : subsidi_kotran_reversal,
+        total_kotran_rev : total_kotran_reversal,
+
+        account_admin : account_admin,
+        account_subsidi_bank : account_subsidi_bank,
+        rek_number_penampung : rek_number_penampung,
+      },
+      type: "POST",
+
+      success: function (response) {
+        if (response.code == 200) {
+          Swal.fire(
+            response.label,
+            response.message,
+            response.status
+          ).then(nx => {
+            localStorage.removeItem("list_coob");
+            location.href = '/campaign';
+          });
+        } else {
+          Swal.fire(
+            response.label,
+            response.message,
+            response.status
+          ).then(nx => {
+            location.reload();
+          })
+        }
+      },
+
+      error: function (error) {
+        console.log(error);
+      }
+    });
+  });
+</script>
+
+<!-- Footer -->
+<%- include('../layout/footer.ejs') %>

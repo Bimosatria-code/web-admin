@@ -1,0 +1,1405 @@
+<!-- Header -->
+<%- include('../../layout/header.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Setting Transfer Dana</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Setting Fee</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+ <!-- Main content -->
+ <section class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <!-- <button class="btn btn-primary reload">Reload</button>
+        <hr> -->
+        <form id="formTransfer" autocomplete="off">
+          <input type="hidden" name="id" value="<%= transfer.id %>" />
+          <!-- <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Request Aktivasi</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="request_activation" name="request_activation" required>
+                <option value="1" <%= transfer.request_activation ? 'selected' : '' %>>Aktif</option>
+                <option value="0" <%= transfer.request_activation ? '' : 'selected' %>>Non Aktif</option>
+              </select>
+            </div>
+          </div> -->
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Jenis Transaksi</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="description_pcode" name="description_pcode" required>
+                <% for (let trans of master) { %>
+                  <option value="<%= trans.id %>" <%= transfer.description_pcode === trans.id ? 'selected' : '' %>><%= trans.transactions %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Pcode</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="pcode" 
+                      name="pcode"
+                      minlength="6"
+                      maxlength="6" 
+                      value="<%= transfer.pcode %>"
+                      readonly
+                      required />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Jenis Transaksi</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="jenis_transaksi" 
+                      name="jenis_transaksi" 
+                      value="<%= transfer.jenis_transaksi %>"
+                       />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Deskripsi Trx</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="trx_dec" 
+                      name="trx_dec" 
+                      minlength="1"
+                      maxlength="40" 
+                      value="<%= transfer.trx_dec %>" />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Channel ID</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="channel_id" 
+                      name="channel_id" 
+                      minlength="1"
+                      maxlength="4" 
+                      onkeypress='validate(event)' 
+                      value="<%= transfer.channel_id %>"
+                       />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Pcode BV</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="pcode_bv" 
+                      name="pcode_bv" 
+                      minlength="1"
+                      maxlength="6" 
+                      value="<%= transfer.pcode_bv %>"
+                       />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Switcher</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="switcher" 
+                      name="switcher" 
+                      minlength="1"
+                      maxlength="10" 
+                      value="<%= transfer.switcher %>"
+                       />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Acquirer</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="acq" 
+                      name="acq" 
+                      minlength="1"
+                      maxlength="11" 
+                      value="<%= transfer.acq %>"
+                       />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Transafer Indicator</label>
+            <div class="col-sm-3">
+              <input type="text" 
+                      class="form-control" 
+                      id="trf_indicator" 
+                      name="trf_indicator" 
+                      minlength="1"
+                      maxlength="1" 
+                      value="<%= transfer.trf_indicator %>"
+                       />
+            </div>
+          </div>
+
+          <br/>
+          <h4>Rekening Perantara</h4>
+          <hr/>
+  
+          <div class="container-fluid"> 
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <th>
+                    Rek. Perantara Debet
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="rek_debet_perantara_1" 
+                            name="rek_debet_perantara_1" 
+                            onkeypress='validate(event)'
+                            minlength="10"
+                            maxlength="11"
+                            value="<%= transfer.rek_debet_perantara_1 %>" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Rek. Perantara Credit
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="rek_credit_perantara" 
+                            name="rek_credit_perantara"
+                            onkeypress='validate(event)'
+                            minlength="10"
+                            maxlength="11"
+                            value="<%= transfer.rek_credit_perantara %>" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Rek. Perantara Debet
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="rek_debet_perantara_2" 
+                            name="rek_debet_perantara_2" 
+                            onkeypress='validate(event)'
+                            minlength="10"
+                            maxlength="11"
+                            value="<%= transfer.rek_debet_perantara_2 %>" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+  
+          <br/>
+          <h4>Kotran Transaction</h4>
+          <hr/>
+
+          <div class="container-fluid"> 
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Kotran Trx IB</th>
+                  <th>Kotran Trx MB</th>
+				  				<th>Kotran Trx IBB</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>
+                    Kotran Debet
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="trx_ib_debet_1" 
+                            name="trx_ib_debet_1" 
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+														value="<%= transfer.trx_ib_debet_1 %>" />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="trx_mb_debet_1" 
+                            name="trx_mb_debet_1"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+														value="<%= transfer.trx_mb_debet_1 %>" />
+                  </td>
+									<td>
+                    <input type="text" 
+                            id="trx_ibb_debet_1" 
+                            name="trx_ibb_debet_1"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+														value="<%= transfer.trx_ibb_debet_1 %>" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Kotran Credit
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="trx_ib_credit" 
+                            name="trx_ib_credit"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+														value="<%= transfer.trx_ib_credit %>" />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="trx_mb_credit" 
+                            name="trx_mb_credit"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+														value="<%= transfer.trx_mb_credit %>" />
+                  </td>
+									<td>
+                    <input type="text" 
+                            id="trx_ibb_credit" 
+                            name="trx_ibb_credit"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+														value="<%= transfer.trx_ibb_credit %>" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>
+                    Kotran Debet
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="trx_ib_debet_2" 
+                            name="trx_ib_debet_2"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+														value="<%= transfer.trx_ib_debet_2 %>" />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="trx_mb_debet_2" 
+                            name="trx_mb_debet_2"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+														value="<%= transfer.trx_mb_debet_2 %>" />
+                  </td>
+									<td>
+                    <input type="text" 
+                            id="trx_ibb_debet_2" 
+                            name="trx_ibb_debet_2"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+														value="<%= transfer.trx_ibb_debet_2 %>" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+					<br/>
+          <h4>Kotran Reversal</h4>
+          <hr/>
+
+          <div class="container-fluid"> 
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Kotran Reversal IB</th>
+                  <th>Kotran Reversal MB</th>
+									<th>Kotran Reversal IBB</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>
+                    Reversal Debet
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="rev_ib_debet_1" 
+                            name="rev_ib_debet_1" 
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+														value="<%= transfer.rev_ib_debet_1 %>" />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="rev_mb_debet_1" 
+                            name="rev_mb_debet_1"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+														value="<%= transfer.rev_mb_debet_1 %>" />
+                  </td>
+									<td>
+                    <input type="text" 
+                            id="rev_ibb_debet_1" 
+                            name="rev_ibb_debet_1"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+														value="<%= transfer.rev_ibb_debet_1 %>" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Reversal Credit
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="rev_ib_credit" 
+                            name="rev_ib_credit"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+														value="<%= transfer.rev_ib_credit %>" />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="rev_mb_credit" 
+                            name="rev_mb_credit"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+														value="<%= transfer.rev_mb_credit %>" />
+                  </td>
+									<td>
+                    <input type="text" 
+                            id="rev_ibb_credit" 
+                            name="rev_ibb_credit"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+														value="<%= transfer.rev_ibb_credit %>" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>
+                    Reversal Debet
+                  </th>
+                  <td>
+                    <input type="text" 
+                            id="rev_ib_debet_2" 
+                            name="rev_ib_debet_2"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+														value="<%= transfer.rev_ib_debet_2 %>" />
+                  </td>
+                  <td>
+                    <input type="text" 
+                            id="rev_mb_debet_2" 
+                            name="rev_mb_debet_2"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+														value="<%= transfer.rev_mb_debet_2 %>" />
+                  </td>
+									<td>
+                    <input type="text" 
+                            id="rev_ibb_debet_2" 
+                            name="rev_ibb_debet_2"
+                            onkeypress='validate(event)'
+                            minlength="4"
+                            maxlength="4"
+														value="<%= transfer.rev_ibb_debet_2 %>" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <br/>
+          <h4>Kotran Debet Fee</h4>
+          <hr/>
+
+          <div class="container-fluid"> 
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Fee IB</th>
+                  <th>Fee MB</th>
+									<th>Fee IBB</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>Original (1)</th>
+                  <td>
+                    <input type="text" id="ori_ib_1" name="ori_ib_1" value="<%= transfer.ori_ib_1 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_1" name="ori_mb_1" value="<%= transfer.ori_mb_1 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_1" name="ori_ibb_1" value="<%= transfer.ori_ibb_1 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (1)</th>
+                  <td>
+                    <input type="text" id="rev_ib_1" name="rev_ib_1" value="<%= transfer.rev_ib_1 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_1" name="rev_mb_1" value="<%= transfer.rev_mb_1 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_1" name="rev_ibb_1" value="<%= transfer.rev_ibb_1 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (1)</th>
+                  <td>
+                    <input type="text" id="acc_ib_1" name="acc_ib_1" value="<%= transfer.acc_ib_1 %>" minlength="1" maxlength="11" />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_1" name="acc_mb_1" value="<%= transfer.acc_mb_1 %>" minlength="1" maxlength="11" />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_1" name="acc_ibb_1" value="<%= transfer.acc_ibb_1 %>" minlength="1" maxlength="11" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (1)</th>
+                  <td>
+                    <input type="text" id="am_ib_1" name="am_ib_1" value="<%= transfer.am_ib_1 %>" onkeypress='validate(event)' onchange="check_row(1, 'ib')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_1" name="am_mb_1" value="<%= transfer.am_mb_1 %>" onkeypress='validate(event)' onchange="check_row(1, 'mb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_1" name="am_ibb_1" value="<%= transfer.am_ibb_1 %>" onkeypress='validate(event)' onchange="check_row(1, 'ibb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                </tr>
+
+                <tr></tr>
+
+                <tr>
+                  <th>Original (2)</th>
+                  <td>
+                    <input type="text" id="ori_ib_2" name="ori_ib_2" value="<%= transfer.ori_ib_2 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_2" name="ori_mb_2" value="<%= transfer.ori_mb_2 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_2" name="ori_ibb_2" value="<%= transfer.ori_ibb_2 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (2)</th>
+                  <td>
+                    <input type="text" id="rev_ib_2" name="rev_ib_2" value="<%= transfer.rev_ib_2 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_2" name="rev_mb_2" value="<%= transfer.rev_mb_2 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_2" name="rev_ibb_2" value="<%= transfer.rev_ibb_2 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (2)</th>
+                  <td>
+                    <input type="text" id="acc_ib_2" name="acc_ib_2" value="<%= transfer.acc_ib_2 %>" minlength="1" maxlength="11" />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_2" name="acc_mb_2" value="<%= transfer.acc_mb_2 %>" minlength="1" maxlength="11" />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_2" name="acc_ibb_2" value="<%= transfer.acc_ibb_2 %>" minlength="1" maxlength="11" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (2)</th>
+                  <td>
+                    <input type="text" id="am_ib_2" name="am_ib_2" value="<%= transfer.am_ib_2 %>" onkeypress='validate(event)' onchange="check_row(2, 'ib')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_2" name="am_mb_2" value="<%= transfer.am_mb_2 %>" onkeypress='validate(event)' onchange="check_row(2, 'mb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_2" name="am_ibb_2" value="<%= transfer.am_ibb_2 %>" onkeypress='validate(event)' onchange="check_row(2, 'ibb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                </tr>
+
+                <tr></tr>
+
+                <tr>
+                  <th>Original (3)</th>
+                  <td>
+                    <input type="text" id="ori_ib_3" name="ori_ib_3" value="<%= transfer.ori_ib_3 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_3" name="ori_mb_3" value="<%= transfer.ori_mb_3 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_3" name="ori_ibb_3" value="<%= transfer.ori_ibb_3 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (3)</th>
+                  <td>
+                    <input type="text" id="rev_ib_3" name="rev_ib_3" value="<%= transfer.rev_ib_3 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_3" name="rev_mb_3" value="<%= transfer.rev_mb_3 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_3" name="rev_ibb_3" value="<%= transfer.rev_ibb_3 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (3)</th>
+                  <td>
+                    <input type="text" id="acc_ib_3" name="acc_ib_3" value="<%= transfer.acc_ib_3 %>" minlength="1" maxlength="11" />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_3" name="acc_mb_3" value="<%= transfer.acc_mb_3 %>" minlength="1" maxlength="11" />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_3" name="acc_ibb_3" value="<%= transfer.acc_ibb_3 %>" minlength="1" maxlength="11" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (3)</th>
+                  <td>
+                    <input type="text" id="am_ib_3" name="am_ib_3" value="<%= transfer.am_ib_3 %>" onkeypress='validate(event)' onchange="check_row(3, 'ib')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_3" name="am_mb_3" value="<%= transfer.am_mb_3 %>" onkeypress='validate(event)' onchange="check_row(3, 'mb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_3" name="am_ibb_3" value="<%= transfer.am_ibb_3 %>" onkeypress='validate(event)' onchange="check_row(3, 'ibb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                </tr>
+
+                <tr></tr>
+
+                <tr>
+                  <th>Original (4)</th>
+                  <td>
+                    <input type="text" id="ori_ib_4" name="ori_ib_4" value="<%= transfer.ori_ib_4 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_4" name="ori_mb_4" value="<%= transfer.ori_mb_4 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_4" name="ori_ibb_4" value="<%= transfer.ori_ibb_4 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (4)</th>
+                  <td>
+                    <input type="text" id="rev_ib_4" name="rev_ib_4" value="<%= transfer.rev_ib_4 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_4" name="rev_mb_4" value="<%= transfer.rev_mb_4 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_4" name="rev_ibb_4" value="<%= transfer.rev_ibb_4 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (4)</th>
+                  <td>
+                    <input type="text" id="acc_ib_4" name="acc_ib_4" value="<%= transfer.acc_ib_4 %>" minlength="1" maxlength="11" />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_4" name="acc_mb_4" value="<%= transfer.acc_mb_4 %>" minlength="1" maxlength="11" />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_4" name="acc_ibb_4" value="<%= transfer.acc_ibb_4 %>" minlength="1" maxlength="11" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (4)</th>
+                  <td>
+                    <input type="text" id="am_ib_4" name="am_ib_4" value="<%= transfer.am_ib_4 %>" onkeypress='validate(event)' onchange="check_row(4, 'ib')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_4" name="am_mb_4" value="<%= transfer.am_mb_4 %>" onkeypress='validate(event)' onchange="check_row(4, 'mb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_4" name="am_ibb_4" value="<%= transfer.am_ibb_4 %>" onkeypress='validate(event)' onchange="check_row(4, 'ibb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                </tr>
+
+                <tr></tr>
+
+                <tr>
+                  <th>Original (5)</th>
+                  <td>
+                    <input type="text" id="ori_ib_5" name="ori_ib_5" value="<%= transfer.ori_ib_5 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_5" name="ori_mb_5" value="<%= transfer.ori_mb_5 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_5" name="ori_ibb_5" value="<%= transfer.ori_ibb_5 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (5)</th>
+                  <td>
+                    <input type="text" id="rev_ib_5" name="rev_ib_5" value="<%= transfer.rev_ib_5 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_5" name="rev_mb_5" value="<%= transfer.rev_mb_5 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_5" name="rev_ibb_5" value="<%= transfer.rev_ibb_5 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (5)</th>
+                  <td>
+                    <input type="text" id="acc_ib_5" name="acc_ib_5" value="<%= transfer.acc_ib_5 %>" minlength="1" maxlength="11" />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_5" name="acc_mb_5" value="<%= transfer.acc_mb_5 %>" minlength="1" maxlength="11" />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_5" name="acc_ibb_5" value="<%= transfer.acc_ibb_5 %>" minlength="1" maxlength="11" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (5)</th>
+                  <td>
+                    <input type="text" id="am_ib_5" name="am_ib_5" value="<%= transfer.am_ib_5 %>" onkeypress='validate(event)' onchange="check_row(5, 'ib')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_5" name="am_mb_5" value="<%= transfer.am_mb_5 %>" onkeypress='validate(event)' onchange="check_row(5, 'mb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_5" name="am_ibb_5" value="<%= transfer.am_ibb_5 %>" onkeypress='validate(event)' onchange="check_row(5, 'ibb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                </tr>
+
+                <tr></tr>
+
+                <tr>
+                  <th>Original (6)</th>
+                  <td>
+                    <input type="text" id="ori_ib_6" name="ori_ib_6" value="<%= transfer.ori_ib_6 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_6" name="ori_mb_6" value="<%= transfer.ori_mb_6 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_6" name="ori_ibb_6" value="<%= transfer.ori_ibb_6 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (6)</th>
+                  <td>
+                    <input type="text" id="rev_ib_6" name="rev_ib_6" value="<%= transfer.rev_ib_6 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_6" name="rev_mb_6" value="<%= transfer.rev_mb_6 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_6" name="rev_ibb_6" value="<%= transfer.rev_ibb_6 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (6)</th>
+                  <td>
+                    <input type="text" id="acc_ib_6" name="acc_ib_6" value="<%= transfer.acc_ib_6 %>" minlength="1" maxlength="11" />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_6" name="acc_mb_6" value="<%= transfer.acc_mb_6 %>" minlength="1" maxlength="11" />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_6" name="acc_ibb_6" value="<%= transfer.acc_ibb_6 %>" minlength="1" maxlength="11" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (6)</th>
+                  <td>
+                    <input type="text" id="am_ib_6" name="am_ib_6" value="<%= transfer.am_ib_6 %>" onkeypress='validate(event)' onchange="check_row(6, 'ib')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_6" name="am_mb_6" value="<%= transfer.am_mb_6 %>" onkeypress='validate(event)' onchange="check_row(6, 'mb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_6" name="am_ibb_6" value="<%= transfer.am_ibb_6 %>" onkeypress='validate(event)' onchange="check_row(6, 'ibb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                </tr>
+
+                <tr></tr>
+
+                <tr>
+                  <th>Original (7)</th>
+                  <td>
+                    <input type="text" id="ori_ib_7" name="ori_ib_7" value="<%= transfer.ori_ib_7 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_7" name="ori_mb_7" value="<%= transfer.ori_mb_7 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_7" name="ori_ibb_7" value="<%= transfer.ori_ibb_7 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (7)</th>
+                  <td>
+                    <input type="text" id="rev_ib_7" name="rev_ib_7" value="<%= transfer.rev_ib_7 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_7" name="rev_mb_7" value="<%= transfer.rev_mb_7 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_7" name="rev_ibb_7" value="<%= transfer.rev_ibb_7 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (7)</th>
+                  <td>
+                    <input type="text" id="acc_ib_7" name="acc_ib_7" value="<%= transfer.acc_ib_7 %>" minlength="1" maxlength="11" />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_7" name="acc_mb_7" value="<%= transfer.acc_mb_7 %>" minlength="1" maxlength="11" />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_7" name="acc_ibb_7" value="<%= transfer.acc_ibb_7 %>" minlength="1" maxlength="11" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (7)</th>
+                  <td>
+                    <input type="text" id="am_ib_7" name="am_ib_7" value="<%= transfer.am_ib_7 %>" onkeypress='validate(event)' onchange="check_row(7, 'ib')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_7" name="am_mb_7" value="<%= transfer.am_mb_7 %>" onkeypress='validate(event)' onchange="check_row(7, 'mb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_7" name="am_ibb_7" value="<%= transfer.am_ibb_7 %>" onkeypress='validate(event)' onchange="check_row(7, 'ibb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                </tr>
+
+                <tr></tr>
+
+                <tr>
+                  <th>Original (8)</th>
+                  <td>
+                    <input type="text" id="ori_ib_8" name="ori_ib_8" value="<%= transfer.ori_ib_8 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_8" name="ori_mb_8" value="<%= transfer.ori_mb_8 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_8" name="ori_ibb_8" value="<%= transfer.ori_ibb_8 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (8)</th>
+                  <td>
+                    <input type="text" id="rev_ib_8" name="rev_ib_8" value="<%= transfer.rev_ib_8 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_8" name="rev_mb_8" value="<%= transfer.rev_mb_8 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_8" name="rev_ibb_8" value="<%= transfer.rev_ibb_8 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (8)</th>
+                  <td>
+                    <input type="text" id="acc_ib_8" name="acc_ib_8" value="<%= transfer.acc_ib_8 %>" minlength="1" maxlength="11" />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_8" name="acc_mb_8" value="<%= transfer.acc_mb_8 %>" minlength="1" maxlength="11" />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_8" name="acc_ibb_8" value="<%= transfer.acc_ibb_8 %>" minlength="1" maxlength="11" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (8)</th>
+                  <td>
+                    <input type="text" id="am_ib_8" name="am_ib_8" value="<%= transfer.am_ib_8 %>" onkeypress='validate(event)' onchange="check_row(8, 'ib')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_8" name="am_mb_8" value="<%= transfer.am_mb_8 %>" onkeypress='validate(event)' onchange="check_row(8, 'mb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_8" name="am_ibb_8" value="<%= transfer.am_ibb_8 %>" onkeypress='validate(event)' onchange="check_row(8, 'ibb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                </tr>
+
+                <tr></tr>
+
+                <tr>
+                  <th>Original (9)</th>
+                  <td>
+                    <input type="text" id="ori_ib_9" name="ori_ib_9" value="<%= transfer.ori_ib_9 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_9" name="ori_mb_9" value="<%= transfer.ori_mb_9 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_9" name="ori_ibb_9" value="<%= transfer.ori_ibb_9 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (9)</th>
+                  <td>
+                    <input type="text" id="rev_ib_9" name="rev_ib_9" value="<%= transfer.rev_ib_9 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_9" name="rev_mb_9" value="<%= transfer.rev_mb_9 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_9" name="rev_ibb_9" value="<%= transfer.rev_ibb_9 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (9)</th>
+                  <td>
+                    <input type="text" id="acc_ib_9" name="acc_ib_9" value="<%= transfer.acc_ib_9 %>" minlength="1" maxlength="11" />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_9" name="acc_mb_9" value="<%= transfer.acc_mb_9 %>" minlength="1" maxlength="11" />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_9" name="acc_ibb_9" value="<%= transfer.acc_ibb_9 %>" minlength="1" maxlength="11" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (9)</th>
+                  <td>
+                    <input type="text" id="am_ib_9" name="am_ib_9" value="<%= transfer.am_ib_9 %>" onkeypress='validate(event)' onchange="check_row(9, 'ib')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_9" name="am_mb_9" value="<%= transfer.am_mb_9 %>" onkeypress='validate(event)' onchange="check_row(9, 'mb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_9" name="am_ibb_9" value="<%= transfer.am_ibb_9 %>" onkeypress='validate(event)' onchange="check_row(9, 'ibb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                </tr>
+
+                <tr></tr>
+
+                <tr>
+                  <th>Original (10)</th>
+                  <td>
+                    <input type="text" id="ori_ib_10" name="ori_ib_10" value="<%= transfer.ori_ib_10 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="ori_mb_10" name="ori_mb_10" value="<%= transfer.ori_mb_10 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="ori_ibb_10" name="ori_ibb_10" value="<%= transfer.ori_ibb_10 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reversal (10)</th>
+                  <td>
+                    <input type="text" id="rev_ib_10" name="rev_ib_10" value="<%= transfer.rev_ib_10 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                  <td>
+                    <input type="text" id="rev_mb_10" name="rev_mb_10" value="<%= transfer.rev_mb_10 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+									<td>
+                    <input type="text" id="rev_ibb_10" name="rev_ibb_10" value="<%= transfer.rev_ibb_10 %>" onkeypress='validate(event)' minlength="4" maxlength="4" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Account (10)</th>
+                  <td>
+                    <input type="text" id="acc_ib_10" name="acc_ib_10" value="<%= transfer.acc_ib_10 %>" minlength="1" maxlength="11" />
+                  </td>
+                  <td>
+                    <input type="text" id="acc_mb_10" name="acc_mb_10" value="<%= transfer.acc_mb_10 %>" minlength="1" maxlength="11" />
+                  </td>
+									<td>
+                    <input type="text" id="acc_ibb_10" name="acc_ibb_10" value="<%= transfer.acc_ibb_10 %>" minlength="1" maxlength="11" />
+                  </td>
+                </tr>
+								<tr>
+                  <th>Fee Amount (10)</th>
+                  <td>
+                    <input type="text" id="am_ib_10" name="am_ib_10" value="<%= transfer.am_ib_10 %>" onkeypress='validate(event)' onchange="check_row(10, 'ib')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                  <td>
+                    <input type="text" id="am_mb_10" name="am_mb_10" value="<%= transfer.am_mb_10 %>" onkeypress='validate(event)' onchange="check_row(10, 'mb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+									<td>
+                    <input type="text" id="am_ibb_10" name="am_ibb_10" value="<%= transfer.am_ibb_10 %>" onkeypress='validate(event)' onchange="check_row(10, 'ibb')" minlength="1" maxlength="20" value="0.00" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="col-sm-12">
+            <a href="/transfer" class="btn btn-secondary float-right mr-2">Kembali</a>
+            <button type="submit" class="btn btn-primary float-right mr-2">Save</button>
+          </div>
+      </form>
+      </div>
+      
+    </div>
+    
+
+  </div>
+  <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../../layout/footer/js.ejs'); %>
+
+<!-- Additional Js -->
+<script src="/js/sweetalert2.min.js"></script>
+<script src="/js/additional/tranferdana/transferdana.js"></script>
+<script>
+  // Get pcode, biller code, product type and product code
+  $(document).ready(function(){
+    $("#description_pcode").change(function(){
+      var id = this.value;
+      ajax_request(id);
+    });
+  });
+
+  function check_row(sequence, channel) {
+    var fee_ib = $("input[name=am_"+channel+"_"+sequence+"]").val();
+    var fee_mb = $("input[name=am_"+channel+"_"+sequence+"]").val();
+    var fee_ibb = $("input[name=am_"+channel+"_"+sequence+"]").val();
+
+    if(parseInt(fee_ib) > 0 || parseInt(fee_mb) > 0 || parseInt(fee_ibb) > 0) {
+      document.getElementById("ori_"+channel+"_"+sequence).required = true;
+      document.getElementById("rev_"+channel+"_"+sequence).required = true;
+      // document.getElementById("acc_"+channel+"_"+sequence).required = true;
+    } else {
+      document.getElementById("ori_"+channel+"_"+sequence).required = false;
+      document.getElementById("rev_"+channel+"_"+sequence).required = false;
+      // document.getElementById("acc_"+channel+"_"+sequence).required = false;
+    }
+  }
+  
+  function ajax_request(id){
+    $.ajax({
+      url: "/select-master/" + id,
+      type:"get",
+      success:function(response){
+      	if (response.code === 500) {
+          Swal.fire(
+            response.label,
+            response.message,
+            response.status
+          )
+        }
+
+        // set value
+        document.getElementById("pcode").setAttribute('value', response.message.pcode);
+      },
+      error: function(error) {
+        console.log(error);
+      }
+    });
+  }
+
+  // Reload Data
+
+  $('#formTransfer').submit(function (e) {
+    e.preventDefault();
+
+    let id	= $("input[name=id]").val();
+		// let request_activation = $("#request_activation").val();
+		let pcode	= $("input[name=pcode]").val();
+		let description_pcode = $("#description_pcode").val();
+		let trx_dec = $("input[name=trx_dec]").val();
+    let channel_id = $("input[name=channel_id]").val();
+    let pcode_bv = $("input[name=pcode_bv]").val();
+		let switcher = $("input[name=switcher]").val();
+    let acq = $("input[name=acq]").val();
+    let trf_indicator = $("input[name=trf_indicator]").val();
+    let jenis_transaksi = $("input[name=jenis_transaksi]").val();
+    let rek_debet_perantara_1 = $("input[name=rek_debet_perantara_1]").val();
+		let rek_credit_perantara = $("input[name=rek_credit_perantara]").val();
+    let rek_debet_perantara_2 = $("input[name=rek_debet_perantara_2]").val();
+
+		let trx_ib_debet_1 = $("input[name=trx_ib_debet_1]").val();
+		let trx_mb_debet_1 = $("input[name=trx_mb_debet_1]").val();
+		let trx_ibb_debet_1 = $("input[name=trx_ibb_debet_1]").val();
+		let trx_ib_credit = $("input[name=trx_ib_credit]").val();
+		let trx_mb_credit = $("input[name=trx_mb_credit]").val();
+		let trx_ibb_credit = $("input[name=trx_ibb_credit]").val();
+		let trx_ib_debet_2 = $("input[name=trx_ib_debet_2]").val();
+		let trx_mb_debet_2 = $("input[name=trx_mb_debet_2]").val();
+		let trx_ibb_debet_2 = $("input[name=trx_ibb_debet_2]").val();
+		let rev_ib_debet_1 = $("input[name=rev_ib_debet_1]").val();
+		let rev_mb_debet_1 = $("input[name=rev_mb_debet_1]").val();
+		let rev_ibb_debet_1 = $("input[name=rev_ibb_debet_1]").val();
+		let rev_ib_credit = $("input[name=rev_ib_credit]").val();
+		let rev_mb_credit = $("input[name=rev_mb_credit]").val();
+		let rev_ibb_credit = $("input[name=rev_ibb_credit]").val();
+		let rev_ib_debet_2 = $("input[name=rev_ib_debet_2]").val();
+		let rev_mb_debet_2 = $("input[name=rev_mb_debet_2]").val();
+		let rev_ibb_debet_2 = $("input[name=rev_ibb_debet_2]").val();
+		
+    let ori_ib_1 = $("input[name=ori_ib_1]").val();
+		let ori_mb_1 = $("input[name=ori_mb_1]").val();
+		let ori_ibb_1 = $("input[name=ori_ibb_1]").val();
+		let rev_ib_1 = $("input[name=rev_ib_1]").val();
+		let rev_mb_1 = $("input[name=rev_mb_1]").val();
+		let rev_ibb_1 = $("input[name=rev_ibb_1]").val();
+		let acc_ib_1 = $("input[name=acc_ib_1]").val();
+		let acc_mb_1 = $("input[name=acc_mb_1]").val();
+		let acc_ibb_1 = $("input[name=acc_ibb_1]").val();
+		let am_ib_1 = $("input[name=am_ib_1]").val();
+		let am_mb_1 = $("input[name=am_mb_1]").val();
+		let am_ibb_1 = $("input[name=am_ibb_1]").val();
+
+    let ori_ib_2 = $("input[name=ori_ib_2]").val();
+		let ori_mb_2 = $("input[name=ori_mb_2]").val();
+		let ori_ibb_2 = $("input[name=ori_ibb_2]").val();
+		let rev_ib_2 = $("input[name=rev_ib_2]").val();
+		let rev_mb_2 = $("input[name=rev_mb_2]").val();
+		let rev_ibb_2 = $("input[name=rev_ibb_2]").val();
+		let acc_ib_2 = $("input[name=acc_ib_2]").val();
+		let acc_mb_2 = $("input[name=acc_mb_2]").val();
+		let acc_ibb_2 = $("input[name=acc_ibb_2]").val();
+		let am_ib_2 = $("input[name=am_ib_2]").val();
+		let am_mb_2 = $("input[name=am_mb_2]").val();
+		let am_ibb_2 = $("input[name=am_ibb_2]").val();
+
+    let ori_ib_3 = $("input[name=ori_ib_3]").val();
+		let ori_mb_3 = $("input[name=ori_mb_3]").val();
+		let ori_ibb_3 = $("input[name=ori_ibb_3]").val();
+		let rev_ib_3 = $("input[name=rev_ib_3]").val();
+		let rev_mb_3 = $("input[name=rev_mb_3]").val();
+		let rev_ibb_3 = $("input[name=rev_ibb_3]").val();
+		let acc_ib_3 = $("input[name=acc_ib_3]").val();
+		let acc_mb_3 = $("input[name=acc_mb_3]").val();
+		let acc_ibb_3 = $("input[name=acc_ibb_3]").val();
+		let am_ib_3 = $("input[name=am_ib_3]").val();
+		let am_mb_3 = $("input[name=am_mb_3]").val();
+		let am_ibb_3 = $("input[name=am_ibb_3]").val();
+
+    let ori_ib_4 = $("input[name=ori_ib_4]").val();
+		let ori_mb_4 = $("input[name=ori_mb_4]").val();
+		let ori_ibb_4 = $("input[name=ori_ibb_4]").val();
+		let rev_ib_4 = $("input[name=rev_ib_4]").val();
+		let rev_mb_4 = $("input[name=rev_mb_4]").val();
+		let rev_ibb_4 = $("input[name=rev_ibb_4]").val();
+		let acc_ib_4 = $("input[name=acc_ib_4]").val();
+		let acc_mb_4 = $("input[name=acc_mb_4]").val();
+		let acc_ibb_4 = $("input[name=acc_ibb_4]").val();
+		let am_ib_4 = $("input[name=am_ib_4]").val();
+		let am_mb_4 = $("input[name=am_mb_4]").val();
+		let am_ibb_4 = $("input[name=am_ibb_4]").val();
+
+    let ori_ib_5 = $("input[name=ori_ib_5]").val();
+		let ori_mb_5 = $("input[name=ori_mb_5]").val();
+		let ori_ibb_5 = $("input[name=ori_ibb_5]").val();
+		let rev_ib_5 = $("input[name=rev_ib_5]").val();
+		let rev_mb_5 = $("input[name=rev_mb_5]").val();
+		let rev_ibb_5 = $("input[name=rev_ibb_5]").val();
+		let acc_ib_5 = $("input[name=acc_ib_5]").val();
+		let acc_mb_5 = $("input[name=acc_mb_5]").val();
+		let acc_ibb_5 = $("input[name=acc_ibb_5]").val();
+		let am_ib_5 = $("input[name=am_ib_5]").val();
+		let am_mb_5 = $("input[name=am_mb_5]").val();
+		let am_ibb_5 = $("input[name=am_ibb_5]").val();
+
+    let ori_ib_6 = $("input[name=ori_ib_6]").val();
+		let ori_mb_6 = $("input[name=ori_mb_6]").val();
+		let ori_ibb_6 = $("input[name=ori_ibb_6]").val();
+		let rev_ib_6 = $("input[name=rev_ib_6]").val();
+		let rev_mb_6 = $("input[name=rev_mb_6]").val();
+		let rev_ibb_6 = $("input[name=rev_ibb_6]").val();
+		let acc_ib_6 = $("input[name=acc_ib_6]").val();
+		let acc_mb_6 = $("input[name=acc_mb_6]").val();
+		let acc_ibb_6 = $("input[name=acc_ibb_6]").val();
+		let am_ib_6 = $("input[name=am_ib_6]").val();
+		let am_mb_6 = $("input[name=am_mb_6]").val();
+		let am_ibb_6 = $("input[name=am_ibb_6]").val();
+
+    let ori_ib_7 = $("input[name=ori_ib_7]").val();
+		let ori_mb_7 = $("input[name=ori_mb_7]").val();
+		let ori_ibb_7 = $("input[name=ori_ibb_7]").val();
+		let rev_ib_7 = $("input[name=rev_ib_7]").val();
+		let rev_mb_7 = $("input[name=rev_mb_7]").val();
+		let rev_ibb_7 = $("input[name=rev_ibb_7]").val();
+		let acc_ib_7 = $("input[name=acc_ib_7]").val();
+		let acc_mb_7 = $("input[name=acc_mb_7]").val();
+		let acc_ibb_7 = $("input[name=acc_ibb_7]").val();
+		let am_ib_7 = $("input[name=am_ib_7]").val();
+		let am_mb_7 = $("input[name=am_mb_7]").val();
+		let am_ibb_7 = $("input[name=am_ibb_7]").val();
+
+    let ori_ib_8 = $("input[name=ori_ib_8]").val();
+		let ori_mb_8 = $("input[name=ori_mb_8]").val();
+		let ori_ibb_8 = $("input[name=ori_ibb_8]").val();
+		let rev_ib_8 = $("input[name=rev_ib_8]").val();
+		let rev_mb_8 = $("input[name=rev_mb_8]").val();
+		let rev_ibb_8 = $("input[name=rev_ibb_8]").val();
+		let acc_ib_8 = $("input[name=acc_ib_8]").val();
+		let acc_mb_8 = $("input[name=acc_mb_8]").val();
+		let acc_ibb_8 = $("input[name=acc_ibb_8]").val();
+		let am_ib_8 = $("input[name=am_ib_8]").val();
+		let am_mb_8 = $("input[name=am_mb_8]").val();
+		let am_ibb_8 = $("input[name=am_ibb_8]").val();
+
+    let ori_ib_9 = $("input[name=ori_ib_9]").val();
+		let ori_mb_9 = $("input[name=ori_mb_9]").val();
+		let ori_ibb_9 = $("input[name=ori_ibb_9]").val();
+		let rev_ib_9 = $("input[name=rev_ib_9]").val();
+		let rev_mb_9 = $("input[name=rev_mb_9]").val();
+		let rev_ibb_9 = $("input[name=rev_ibb_9]").val();
+		let acc_ib_9 = $("input[name=acc_ib_9]").val();
+		let acc_mb_9 = $("input[name=acc_mb_9]").val();
+		let acc_ibb_9 = $("input[name=acc_ibb_9]").val();
+		let am_ib_9 = $("input[name=am_ib_9]").val();
+		let am_mb_9 = $("input[name=am_mb_9]").val();
+		let am_ibb_9 = $("input[name=am_ibb_9]").val();
+
+    let ori_ib_10 = $("input[name=ori_ib_10]").val();
+		let ori_mb_10 = $("input[name=ori_mb_10]").val();
+		let ori_ibb_10 = $("input[name=ori_ibb_10]").val();
+		let rev_ib_10 = $("input[name=rev_ib_10]").val();
+		let rev_mb_10 = $("input[name=rev_mb_10]").val();
+		let rev_ibb_10 = $("input[name=rev_ibb_10]").val();
+		let acc_ib_10 = $("input[name=acc_ib_10]").val();
+		let acc_mb_10 = $("input[name=acc_mb_10]").val();
+		let acc_ibb_10 = $("input[name=acc_ibb_10]").val();
+		let am_ib_10 = $("input[name=am_ib_10]").val();
+		let am_mb_10 = $("input[name=am_mb_10]").val();
+		let am_ibb_10 = $("input[name=am_ibb_10]").val();
+
+    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); 
+
+    $.ajax({
+      url: "/update-transfer",
+      headers: {
+        'CSRF-Token': token // <-- is the csrf token as a header
+      },
+      data:{
+        id:id,
+        // request_activation:request_activation,
+				pcode:pcode,
+				description_pcode:description_pcode,
+				trx_dec: trx_dec,
+        channel_id: channel_id,
+        pcode_bv: pcode_bv,
+        switcher: switcher,
+        acq: acq,
+        trf_indicator: trf_indicator,
+        jenis_transaksi: jenis_transaksi,
+				rek_debet_perantara_1: rek_debet_perantara_1,
+				rek_credit_perantara: rek_credit_perantara,
+        rek_debet_perantara_2: rek_debet_perantara_2,
+
+				trx_ib_debet_1: trx_ib_debet_1,
+				trx_mb_debet_1: trx_mb_debet_1,
+				trx_ibb_debet_1: trx_ibb_debet_1,
+				trx_ib_credit: trx_ib_credit,
+				trx_mb_credit: trx_mb_credit,
+				trx_ibb_credit: trx_ibb_credit,
+				trx_ib_debet_2: trx_ib_debet_2,
+				trx_mb_debet_2: trx_mb_debet_2,
+				trx_ibb_debet_2: trx_ibb_debet_2,
+				rev_ib_debet_1: rev_ib_debet_1,
+				rev_mb_debet_1: rev_mb_debet_1,
+				rev_ibb_debet_1: rev_ibb_debet_1,
+				rev_ib_credit: rev_ib_credit,
+				rev_mb_credit: rev_mb_credit,
+				rev_ibb_credit: rev_ibb_credit,
+				rev_ib_debet_2: rev_ib_debet_2,
+				rev_mb_debet_2: rev_mb_debet_2,
+				rev_ibb_debet_2: rev_ibb_debet_2,
+				
+        ori_ib_1 : ori_ib_1,
+        ori_mb_1 : ori_mb_1,
+        ori_ibb_1 : ori_ibb_1,
+        rev_ib_1 : rev_ib_1,
+        rev_mb_1 : rev_mb_1,
+        rev_ibb_1 : rev_ibb_1,
+        acc_ib_1 : acc_ib_1,
+        acc_mb_1 : acc_mb_1,
+        acc_ibb_1 : acc_ibb_1,
+        am_ib_1 : am_ib_1,
+        am_mb_1 : am_mb_1,
+        am_ibb_1 : am_ibb_1,
+
+        ori_ib_2 : ori_ib_2,
+        ori_mb_2 : ori_mb_2,
+        ori_ibb_2 : ori_ibb_2,
+        rev_ib_2 : rev_ib_2,
+        rev_mb_2 : rev_mb_2,
+        rev_ibb_2 : rev_ibb_2,
+        acc_ib_2 : acc_ib_2,
+        acc_mb_2 : acc_mb_2,
+        acc_ibb_2 : acc_ibb_2,
+        am_ib_2 : am_ib_2,
+        am_mb_2 : am_mb_2,
+        am_ibb_2 : am_ibb_2,
+
+        ori_ib_3 : ori_ib_3,
+        ori_mb_3 : ori_mb_3,
+        ori_ibb_3 : ori_ibb_3,
+        rev_ib_3 : rev_ib_3,
+        rev_mb_3 : rev_mb_3,
+        rev_ibb_3 : rev_ibb_3,
+        acc_ib_3 : acc_ib_3,
+        acc_mb_3 : acc_mb_3,
+        acc_ibb_3 : acc_ibb_3,
+        am_ib_3 : am_ib_3,
+        am_mb_3 : am_mb_3,
+        am_ibb_3 : am_ibb_3,
+
+        ori_ib_4 : ori_ib_4,
+        ori_mb_4 : ori_mb_4,
+        ori_ibb_4 : ori_ibb_4,
+        rev_ib_4 : rev_ib_4,
+        rev_mb_4 : rev_mb_4,
+        rev_ibb_4 : rev_ibb_4,
+        acc_ib_4 : acc_ib_4,
+        acc_mb_4 : acc_mb_4,
+        acc_ibb_4 : acc_ibb_4,
+        am_ib_4 : am_ib_4,
+        am_mb_4 : am_mb_4,
+        am_ibb_4 : am_ibb_4,
+
+        ori_ib_5 : ori_ib_5,
+        ori_mb_5 : ori_mb_5,
+        ori_ibb_5 : ori_ibb_5,
+        rev_ib_5 : rev_ib_5,
+        rev_mb_5 : rev_mb_5,
+        rev_ibb_5 : rev_ibb_5,
+        acc_ib_5 : acc_ib_5,
+        acc_mb_5 : acc_mb_5,
+        acc_ibb_5 : acc_ibb_5,
+        am_ib_5 : am_ib_5,
+        am_mb_5 : am_mb_5,
+        am_ibb_5 : am_ibb_5,
+
+        ori_ib_6 : ori_ib_6,
+        ori_mb_6 : ori_mb_6,
+        ori_ibb_6 : ori_ibb_6,
+        rev_ib_6 : rev_ib_6,
+        rev_mb_6 : rev_mb_6,
+        rev_ibb_6 : rev_ibb_6,
+        acc_ib_6 : acc_ib_6,
+        acc_mb_6 : acc_mb_6,
+        acc_ibb_6 : acc_ibb_6,
+        am_ib_6 : am_ib_6,
+        am_mb_6 : am_mb_6,
+        am_ibb_6 : am_ibb_6,
+
+        ori_ib_7 : ori_ib_7,
+        ori_mb_7 : ori_mb_7,
+        ori_ibb_7 : ori_ibb_7,
+        rev_ib_7 : rev_ib_7,
+        rev_mb_7 : rev_mb_7,
+        rev_ibb_7 : rev_ibb_7,
+        acc_ib_7 : acc_ib_7,
+        acc_mb_7 : acc_mb_7,
+        acc_ibb_7 : acc_ibb_7,
+        am_ib_7 : am_ib_7,
+        am_mb_7 : am_mb_7,
+        am_ibb_7 : am_ibb_7,
+
+        ori_ib_8 : ori_ib_8,
+        ori_mb_8 : ori_mb_8,
+        ori_ibb_8 : ori_ibb_8,
+        rev_ib_8 : rev_ib_8,
+        rev_mb_8 : rev_mb_8,
+        rev_ibb_8 : rev_ibb_8,
+        acc_ib_8 : acc_ib_8,
+        acc_mb_8 : acc_mb_8,
+        acc_ibb_8 : acc_ibb_8,
+        am_ib_8 : am_ib_8,
+        am_mb_8 : am_mb_8,
+        am_ibb_8 : am_ibb_8,
+
+        ori_ib_9 : ori_ib_9,
+        ori_mb_9 : ori_mb_9,
+        ori_ibb_9 : ori_ibb_9,
+        rev_ib_9 : rev_ib_9,
+        rev_mb_9 : rev_mb_9,
+        rev_ibb_9 : rev_ibb_9,
+        acc_ib_9 : acc_ib_9,
+        acc_mb_9 : acc_mb_9,
+        acc_ibb_9 : acc_ibb_9,
+        am_ib_9 : am_ib_9,
+        am_mb_9 : am_mb_9,
+        am_ibb_9 : am_ibb_9,
+
+        ori_ib_10 : ori_ib_10,
+        ori_mb_10 : ori_mb_10,
+        ori_ibb_10 : ori_ibb_10,
+        rev_ib_10 : rev_ib_10,
+        rev_mb_10 : rev_mb_10,
+        rev_ibb_10 : rev_ibb_10,
+        acc_ib_10 : acc_ib_10,
+        acc_mb_10 : acc_mb_10,
+        acc_ibb_10 : acc_ibb_10,
+        am_ib_10 : am_ib_10,
+        am_mb_10 : am_mb_10,
+        am_ibb_10 : am_ibb_10,
+      },
+      type:"POST",
+      success:function(response){
+        // console.log(response)
+        if (response.code == 200) {
+          Swal.fire(
+            response.label,
+            response.message,
+            response.status
+          ).then(nx => {
+            location.href = '/transfer';
+          });
+        } else {
+          Swal.fire(
+            response.label,
+            response.message,
+            response.status
+          ).then(nx => {
+            location.reload();
+          });
+        }
+      },
+      error: function(error) {
+        console.log(error);
+      }
+    });
+  });
+</script>
+
+<!-- Footer -->
+<%- include('../../layout/footer.ejs') %>

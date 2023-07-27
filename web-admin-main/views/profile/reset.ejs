@@ -1,0 +1,114 @@
+<!-- Header -->
+<%- include('../layout/header.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Profile</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Profile</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="modal-body">
+        <form action="/profile" method="post" class="needs-validation" novalidate autocomplete="off">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <input type="hidden" name="id" value="<%= user.id %>" />
+          <div class="form-group input-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" value="<%= user.username %>" placeholder="Username" required />
+          </div>
+          <div class="form-group input-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Password</label>
+            <input name="password" 
+                    type="password"
+                    class="input form-control" 
+                    id="password" 
+                    placeholder="password"
+                    maxlength="8"
+                    minlength="6"
+                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$"
+                    required
+                    aria-label="password" 
+                    aria-describedby="basic-addon1" />
+
+            <div class="input-group-append">
+              <span class="input-group-text" onclick="password_show_hide();">
+                <i class="fas fa-eye" id="show_eye"></i>
+                <i class="fas fa-eye-slash d-none" id="hide_eye"></i>
+              </span>
+            </div>
+
+            <div class="invalid-feedback">
+              <ul>
+                  <li>Password (UpperCase, LowerCase and Number)</li>
+                  <li>Minimun 6 & Maximum 8 Character</li>
+              </ul>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+  
+<%- include('../layout/footer/js.ejs'); %>
+
+<!-- Additional Js -->
+<script>
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+  (function () {
+    'use strict'
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.querySelectorAll('.needs-validation')
+
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+      .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })();
+
+  function password_show_hide() {
+		var x = document.getElementById("password");
+		var show_eye = document.getElementById("show_eye");
+		var hide_eye = document.getElementById("hide_eye");
+		hide_eye.classList.remove("d-none");
+		if (x.type === "password") {
+			x.type = "text";
+			show_eye.style.display = "none";
+			hide_eye.style.display = "block";
+		} else {
+			x.type = "password";
+			show_eye.style.display = "block";
+			hide_eye.style.display = "none";
+		}
+	}
+</script>
+<!-- Footer -->
+
+<%- include('../layout/footer.ejs') %>

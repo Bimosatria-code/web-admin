@@ -1,0 +1,286 @@
+<!-- Header -->
+<%- include('../../../layout/header.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Master Fee</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Master Fee</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+ <!-- Main content -->
+ <section class="content">
+  <div class="container-fluid">
+		<nav class="nav nav-pills flex-column flex-sm-row">
+      <a class="flex-sm-fill text-sm-center nav-link <%= subpath === 'master-fee' ? 'active' : '' %>" href="/master-fee">Purchase & Bill</a>
+      <a class="flex-sm-fill text-sm-center nav-link <%= subpath === 'master-transfer' ? 'active' : '' %>" href="/master-transfer">Transfer Dana</a>
+      <a class="flex-sm-fill text-sm-center nav-link <%= subpath === 'master-inquiry' ? 'active' : '' %>" href="/master-inquiry">Inquiry</a>
+    </nav>
+    <br/>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <% var create = previllage.includes(10); if (create) { %>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Create</button>
+            <% } %>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+              <tr>
+								<th>Deskripsi Pcode</th>
+                <th>Pcode</th>
+								<th></th>
+              </tr>
+              </thead>
+              <tbody>
+                <% for(let data of m_fee) { %>
+                <tr>
+                  <td><%= data.transactions %></td>
+                  <td><%= data.pcode %></td>
+                  <td>
+                    <% var create = previllage.includes(11); if (create) { %>
+                    <button class="btn btn-success" onclick="edit('<%= data.id %>')">Edit</i></button>
+                    <% } %>
+                    <% var create = previllage.includes(12); if (create) { %>
+                    <button class="btn btn-danger remove" data-id="<%= data.id %>">Delete</button>
+                    <% } %>
+                  </td>
+                </tr>
+								<% } %>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<!-- Modal Create -->
+<div class="modal fade bd-example-modal-lg" id="modalCreate" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Create Master Transfer Dana</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="ajaxform" autocomplete="off">
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Deskripsi Pcode</label>
+            <div class="col-sm-10">
+              <input type="text" 
+                class="form-control" 
+                id="transactions" 
+                name="transactions"
+                placeholder="Transaksi"
+                minlength="1"
+                maxlength="40" required />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Pcode</label>
+            <div class="col-sm-10">
+              <input type="text" 
+                class="form-control" 
+                id="pcode" 
+                name="pcode" 
+                placeholder="Pcode" 
+                minlength="6"
+                maxlength="6" required />
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary save">Save</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Edit -->
+<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Master Transfer Dana</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../../../layout/footer/js.ejs'); %>
+
+<!-- Additional Js -->
+<script src="/js/sweetalert2.min.js"></script>
+<script>
+	$('#modalCreate').on('hidden.bs.modal', function () {
+    $('#modalCreate form')[0].reset();
+  });
+
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+  });
+
+	function validate(evt) {
+    var theEvent = evt || window.event;
+
+    // Handle paste
+    if (theEvent.type === 'paste') {
+        key = event.clipboardData.getData('text/plain');
+    } else {
+    // Handle key press
+        var key = theEvent.keyCode || theEvent.which;
+        key = String.fromCharCode(key);
+    }
+    var regex = /[0-9]|\./;
+    if( !regex.test(key) ) {
+      theEvent.returnValue = false;
+      if(theEvent.preventDefault) theEvent.preventDefault();
+    }
+  }
+
+  $(document).on('click', '.save', function (e) {
+      event.preventDefault();
+
+      let transactions = $("input[name=transactions]").val();
+      let pcode = $("input[name=pcode]").val();
+
+      var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); 
+
+      $.ajax({
+        url: "/master-transfer",
+        headers: {
+            'CSRF-Token': token // <-- is the csrf token as a header
+        },
+        data:{
+          transactions:transactions,
+          pcode:pcode,
+        },
+        type:"POST",
+        success:function(response){
+          if (response.code == 200) {
+            Swal.fire(
+              response.label,
+              response.message,
+              response.status
+            )
+						$('#modalCreate form')[0].reset();
+            location.reload();
+          } else {
+            Swal.fire(
+              response.label,
+              response.message,
+              response.status
+            )
+          }
+        },
+        error: function(error) {
+          console.log(error);
+        }
+       });
+  });
+
+  function edit(id) {
+    $.ajax({
+       url:'/edit-master-transfer/'+id,
+       data:'kosong',
+       type:'GET',
+       success:function(data){
+         $('#modalEdit').find('.modal-header');
+         $('#modalEdit').find('.modal-body').html(data);
+         $('#modalEdit').modal('show');
+       },
+       error: function (xhr, ajaxOptions, thrownError) {
+         
+       }
+    });
+  }
+
+  $(document).on('click', '.remove', function (e) {
+    e.preventDefault();
+    var id = $(this).data('id');
+
+    Swal.fire({
+      title: 'Are you sure want to delete?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url:'/delete-master-transfer/'+id,
+          data:id,
+          dataType:'JSON',
+          type:'GET',
+          success:function(response){
+            if (response.code == 200) {
+              Swal.fire(
+                response.label,
+                response.message,
+                response.status
+              )
+              location.reload();
+            } else {
+              Swal.fire(
+                response.label,
+                response.message,
+                response.status
+              )
+            }
+          },
+          error: function (xhr, ajaxOptions, thrownError) {
+            
+          },
+        });
+      }
+    })
+  });
+</script>
+  
+<!-- Footer -->
+
+<%- include('../../../layout/footer.ejs') %>
+

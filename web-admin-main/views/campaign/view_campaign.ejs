@@ -1,0 +1,384 @@
+<!-- Header -->
+<%- include('../layout/header.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Setting Campaign</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Setting Campaign</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+ <!-- Main content -->
+ <section class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <!-- <button class="btn btn-primary reload">Reload</button> -->
+        <!-- <hr> -->
+        <form id="formCampaign" autocomplete="off">
+          <input type="hidden" id="id" name="id" value="<%= data.id %>" />
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Group Trx</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="group_trx" name="group_trx" disabled >
+                <option value="">Select</option>
+                <option value="1" <%= data.group_trx === '1' ? 'selected' : '' %>>Purchase & Bill</option>
+                <option value="2" <%= data.group_trx === '2' ? 'selected' : '' %>>Transfer Dana</option>
+                <option value="3" <%= data.group_trx === '3' ? 'selected' : '' %>>Inquiry</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row option1">
+            <label class="col-sm-2 col-form-label">Transaksi</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="transaction_p" name="transaction_p" disabled>
+                <% for (let p of purchase) { %>
+                  <option value="<%= p.transactions_id %>" <%= p.transactions_id === parseInt(data.transactions) ? 'selected' : '' %>><%= p.transactions %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row option2">
+            <label class="col-sm-2 col-form-label">Transaksi</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="transaction_td" name="transaction_td" disabled>
+                <% for (let td of transfer_dana) { %>
+                  <option value="<%= td.transactions_id %>" <%= td.transactions_id === parseInt(data.transactions) ? 'selected' : '' %>><%= td.transactions %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row option3">
+            <label class="col-sm-2 col-form-label">Transaksi</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="transaction_i" name="transaction_i" disabled>
+                <% for (let i of inquiry) { %>
+                  <option value="<%= i.transactions_id %>" <%= i.transactions_id === parseInt(data.transactions) ? 'selected' : '' %>><%= i.transactions %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Start Period</label>
+            <div class="col-sm-3">
+              <input type="date" class="form-control" id="start_periode" name="start_periode" value="<%= moment(data.start_periode).utc().format('YYYY-MM-DD') %>" disabled />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">End Periode</label>
+            <div class="col-sm-3">
+              <input type="date" class="form-control" id="end_periode" name="end_periode" value="<%= moment(data.end_periode).utc().format('YYYY-MM-DD') %>" disabled />
+            </div>
+          </div>
+          
+          <hr />
+          <fieldset class="border p-2">
+            <legend class="w-auto">Campaign Online On Boarding</legend>
+            <div class="container-fluid">
+              <table class="table table-bordered" style="width:100%" id="COOB">
+                <thead>
+                  <tr>
+                    <th style="text-align: center;"><label>Opening Account</label></th>
+                    <th style="text-align: center;"><label>Plan Code</label></th>
+                    <th style="text-align: center;"><label>Plan Desc</label></th>
+                    <th style="text-align: center;"><label>Duration (Mount)</label></th>
+                    <th style="text-align: center;"><label>Min. Transaksi</label></th>
+                    <th style="text-align: center;"><label>Max. Transaksi</label></th>
+                    <th style="text-align: center;"><label>Jumlah Trx (s.d kali)</label></th>
+                    <th style="text-align: center;"><label>IB</label></th>
+                    <th style="text-align: center;"><label>MB</label></th>
+                    <th style="text-align: center;"><label>IBB</label></th>
+                    <th style=""></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for (let i = 0; i < cob.length; i++) { %>
+                    <tr>
+                      <td><input class="form-control" type="text" name="open_account" id="open_account_<%= i %>" value="<%= cob[i].open_account %>" disabled></td>
+                      <td><input class="form-control" type="text" name="plan_code" id="plan_code_<%= i %>" value="<%= cob[i].plan_code %>" disabled ></td>
+                      <td>
+                        <select name="plan_desc" class="form-control" onchange="selectPlanProduc(this, '<%= i %>')" disabled>
+                          <% for (let pp of plan_product) { %>
+                            <option value="<%= pp.id %>" <%= pp.id == cob[i].plan_desc ? 'selected' : '' %> ><%= pp.plan_desc %></option>
+                          <% } %>
+                        </select>
+                      </td>
+                      <td><input class="form-control" type="text" name="durations" id="durations" value="<%= cob[i].durations %>" disabled></td>
+                      <td><input class="form-control" type="text" name="min_trx" id="min_trx" value="<%= cob[i].min_trx %>" disabled></td>
+                      <td><input class="form-control" type="text" name="max_trx" id="max_trx" value="<%= cob[i].max_trx %>" disabled></td>
+                      <td><input class="form-control" type="text" name="qty_trx" id="qty_trx" value="<%= cob[i].qty_trx %>" disabled></td>
+                      <td><input type="checkbox" value="1" name="ib" id="ib" <%= cob[i].ib ? 'checked' : '' %> disabled></td>
+                      <td><input type="checkbox" value="1" name="mb" id="mb" <%= cob[i].mb ? 'checked' : '' %> disabled></td>
+                      <td><input type="checkbox" value="1" name="ibb" id="ibb" <%= cob[i].ibb ? 'checked' : '' %> disabled></td>
+                      <!-- <td><button onclick="deleted1(this)" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fa fa-trash"></i></button></td> -->
+                    </tr>
+                  <% } %>
+                </tbody>
+              </table>
+              <!-- <a href="javascript:void(0)" onclick="addRowCOOB()" class="btn btn-success">Add</span></a> -->
+            </div>
+          </fieldset>
+          <br/>
+          
+          <hr/>
+          <fieldset class="border p-2">
+            <legend class="w-auto">Campaign By Saldo</legend>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="opt_1" id="opt_1" value="1" <%= data.options === 1 ? 'checked' : '' %> disabled />
+              <label class="form-check-label" for="opt_1">
+                By Total AUM
+              </label>
+            </div>
+            <div class="container-fluid">
+              <table class="table table-bordered" style="width:100%" id="aum">
+                <thead>
+                  <tr>
+                    <th style="text-align: center;"><label>Range Saldo Awal</label></th>
+                    <th style="text-align: center;"><label>Range Saldo Akhir</label></th>
+                    <th style="text-align: center;"><label>Min. Transaksi</label></th>
+                    <th style="text-align: center;"><label>Max. Transaksi</label></th>
+                    <th style="text-align: center;"><label>Jumlah Trx (s.d kali)</label></th>
+                    <th style="text-align: center;"><label>IB</label></th>
+                    <th style="text-align: center;"><label>MB</label></th>
+                    <th style="text-align: center;"><label>IBB</label></th>
+                    <th style=""></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for (let i = 0; i < caum.length; i++) { %>
+                    <tr>
+                      <td><input class="form-control" type="text" name="start_range_saldo_aum" id="start_range_saldo_aum_<%= i %>" value="<%= caum[i].start_range_saldo_aum %>" disabled></td>
+                      <td><input class="form-control" type="text" name="end_range_saldo_aum" id="end_range_saldo_aum_<%= i %>" value="<%= caum[i].end_range_saldo_aum %>" disabled ></td>
+                      <td><input class="form-control" type="text" name="min_trx_aum" id="min_trx_aum" value="<%= caum[i].min_trx_aum %>" disabled></td>
+                      <td><input class="form-control" type="text" name="max_trx_aum" id="max_trx_aum" value="<%= caum[i].max_trx_aum %>" disabled></td>
+                      <td><input class="form-control" type="text" name="qty_trx_aum" id="qty_trx_aum" value="<%= caum[i].qty_trx_aum %>" disabled></td>
+                      <td><input type="checkbox" value="1" name="ib_aum" id="ib_aum" <%= caum[i].ib ? 'checked' : '' %> disabled></td>
+                      <td><input type="checkbox" value="1" name="mb_aum" id="mb_aum" <%= caum[i].mb ? 'checked' : '' %> disabled></td>
+                      <td><input type="checkbox" value="1" name="ibb_aum" id="ibb_aum" <%= caum[i].ibb ? 'checked' : '' %> disabled></td>
+                      <!-- <td><button onclick="deleted2(this)" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fa fa-trash"></i></button></td> -->
+                    </tr>
+                  <% } %>
+                </tbody>
+              </table>
+              <!-- <a href="javascript:void(0)" onclick="addRowAum()" class="btn btn-success">Add</span></a> -->
+            </div>
+            <hr/><br/>
+            <div class="form-check">
+            <input class="form-check-input" type="radio" name="opt_1" id="opt_1" value="2" <%= data.options === 2 ? 'checked' : '' %> disabled />
+            <label class="form-check-label" for="opt_1">
+              By Plan Product
+            </label>
+          </div>              
+            <div class="container-fluid">
+              <table class="table table-bordered" style="width:100%" id="planProduct">
+                <thead>
+                  <tr>
+                    <th style="text-align: center;"><label>Opening Account</label></th>
+                    <th style="text-align: center;"><label>Plan Code</label></th>
+                    <th style="text-align: center;"><label>Plan Desc</label></th>
+                    <th style="text-align: center;"><label>Min. Transaksi</label></th>
+                    <th style="text-align: center;"><label>Max. Transaksi</label></th>
+                    <th style="text-align: center;"><label>Jumlah Trx (s.d kali)</label></th>
+                    <th style="text-align: center;"><label>IB</label></th>
+                    <th style="text-align: center;"><label>MB</label></th>
+                    <th style="text-align: center;"><label>IBB</label></th>
+                    <th style=""></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for (let i = 0; i < cpp.length; i++) { %>
+                    <tr>
+                      <td><input class="form-control" type="text" name="open_account_product" id="open_account_product_<%= i %>" value="<%= cpp[i].open_account_product %>" disabled></td>
+                      <td><input class="form-control" type="text" name="plan_code_product" id="plan_code_product_<%= i %>" value="<%= cpp[i].plan_code_product %>" disabled ></td>
+                      <td>
+                        <select name="plan_desc_product" class="form-control" onchange="selectPlanProduc(this, '<%= i %>')" disabled>
+                          <% for (let pp of plan_product) { %>
+                            <option value="<%= pp.id %>" <%= pp.id == cpp[i].plan_desc_product ? 'selected' : '' %> ><%= pp.plan_desc %></option>
+                          <% } %>
+                        </select>
+                      </td>
+                      <td><input class="form-control" type="text" name="min_trx_product" id="min_trx_product" value="<%= cpp[i].min_trx_product %>" disabled></td>
+                      <td><input class="form-control" type="text" name="max_trx_product" id="max_trx_product" value="<%= cpp[i].max_trx_product %>" disabled></td>
+                      <td><input class="form-control" type="text" name="qty_trx_product" id="qty_trx_product" value="<%= cpp[i].qty_trx_product %>" disabled></td>
+                      <td><input type="checkbox" value="1" name="ib_product" id="ib_product" <%= cpp[i].ib ? 'checked' : '' %> disabled></td>
+                      <td><input type="checkbox" value="1" name="mb_product" id="mb_product" <%= cpp[i].mb ? 'checked' : '' %> disabled></td>
+                      <td><input type="checkbox" value="1" name="ibb_product" id="ibb_product" <%= cpp[i].ibb ? 'checked' : '' %> disabled></td>
+                      <!-- <td><button onclick="deleted3(this)" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fa fa-trash"></i></button></td> -->
+                    </tr>
+                  <% } %>
+                </tbody>
+              </table>
+              <!-- <a href="javascript:void(0)" onclick="addRowPlanProduct()" class="btn btn-success">Add</span></a> -->
+            </div>
+          </fieldset>
+          <br/>
+
+
+					<br/>
+					<h4>Campaign Fee</h4>
+					<hr/>
+					<div class="container-fluid"> 
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Nasabah</th>
+                  <th>Subsidi Bank</th>
+									<th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>
+                    Biaya Admin
+                  </th>
+                  <td>
+                    <input type="text" id="fee_adm_nasabah" name="fee_adm_nasabah" minlength="1" maxlength="18"
+                      value="<%= data.fee_adm_nasabah %>" onkeyup="cal_admin()" disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="fee_adm_subsidi" name="fee_adm_subsidi"  minlength="1" maxlength="18" 
+                      value="<%= data.fee_adm_subsidi %>" onkeyup="cal_admin()" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="total_fee_adm" name="total_fee_adm" value="<%= data.total_fee_adm %>" disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Kotran Original
+                  </th>
+                  <td>
+                    <input type="text" id="nasabah_kotran_ori" name="nasabah_kotran_ori" onkeypress='validate(event)' minlength="4" maxlength="4"
+                      value="<%= data.nasabah_kotran_ori %>"  disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="subsidi_kotran_ori" name="subsidi_kotran_ori" onkeypress='validate(event)' minlength="4" maxlength="4"
+                      value="<%= data.subsidi_kotran_ori %>"  disabled />
+                  </td>
+									<td>
+                    <input type="text" id="total_kotran_ori" name="total_kotran_ori" minlength="4" maxlength="4" 
+                      value="<%= data.total_kotran_ori %>" onkeypress='validate(event)' disabled />
+                  </td>
+                </tr>
+								<tr>
+                  <th>
+                    Kotran Reversal
+                  </th>
+                  <td>
+                    <input type="text" id="nasabah_kotran_reversal" name="nasabah_kotran_reversal" onkeypress='validate(event)' minlength="4" maxlength="4"
+                      value="<%= data.nasabah_kotran_rev %>"  disabled />
+                  </td>
+                  <td>
+                    <input type="text" id="subsidi_kotran_reversal" name="subsidi_kotran_reversal" onkeypress='validate(event)' minlength="4" maxlength="4"
+                      value="<%= data.subsidi_kotran_rev %>" disabled />
+                  </td>
+									<td>
+                    <input type="text" id="total_kotran_reversal" name="total_kotran_reversal" minlength="4" maxlength="4" 
+                      value="<%= data.total_kotran_rev %>" onkeypress='validate(event)' disabled />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+					<br />
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Account By Admin</label>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" id="account_admin" name="account_admin" minlength="1" maxlength="11" value="<%= data.account_admin %>" disabled />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Account By Subsidi Bank</label>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" id="account_subsidi_bank" name="account_subsidi_bank" minlength="1" maxlength="11" value="<%= data.account_subsidi_bank %>" disabled />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Rekening Penampungan Fee</label>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" id="rek_number_penampung" name="rek_number_penampung" value="<%= data.rek_number_penampung %>"  minlength="10" maxlength="11"  onkeypress='validate(event)' disabled />
+              </div>
+            </div>
+          <br />
+
+					
+        
+          <br/>
+          <div class="col-sm-12">
+            <a href="/campaign" class="btn btn-secondary float-right mr-2">Kembali</a>
+            <!-- <button type="submit" class="btn btn-primary float-right mr-2">Save</button> -->
+          </div>
+      </form>
+      </div>
+      
+    </div>
+    
+
+  </div>
+  <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../layout/footer/js.ejs'); %>
+
+<!-- Additional Js -->
+<script src="/js/sweetalert2.min.js"></script>
+<!-- <script src="/js/additional/campaign/campaign.js"></script> -->
+<script>
+  $(document).ready(function(){
+    $('#group_trx').on('change', function() {
+        hideAll();
+        var category = $(this).val();
+        if(category === '1') {
+            $('.option1').show(); 
+        }
+        if(category === '2') {
+            $('.option2').show(); 
+        }
+        if(category === '3') {
+            $('.option3').show();
+        }
+    });
+
+    check($('select[name="group_trx"]').val());
+  });
+
+  function hideAll() {
+    $('.option1, .option2, .option3').hide();
+  }
+
+  function check(category){
+    hideAll();
+    if(category === '1') {
+      $('.option1').show(); 
+    }
+    if(category === '2') {
+      $('.option2').show(); 
+    }
+    if(category === '3') {
+      $('.option3').show();
+    }
+  }
+</script>
+
+<!-- Footer -->
+<%- include('../layout/footer.ejs') %>

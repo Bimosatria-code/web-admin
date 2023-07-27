@@ -1,0 +1,204 @@
+<!-- Header -->
+<%- include('../../layout/header.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Reporting Transaction Abnormal</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Transaction Abnormal</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+ <!-- Main content -->
+<section class="content">
+  <% if (errorMessage) { %>
+    <div class="alert alert-warning" role="alert">
+      <%= errorMessage %>
+    </div>
+  <% } %>
+  <div class="container">
+    <form method="post" action="/reporting/filter-abnormal">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="inputEmail4">Transaction</label>
+            <select class="form-control" id="transaction" name="transaction">
+              <option value="">Select</option>
+              <% for (let el of list_transaction) { %>
+                <option value="<%= el.transactions %>"><%= el.transactions %></option>
+              <% } %>
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="inputPassword4">Date</label>
+            <input type="date" class="form-control" id="dates" name="dates" />
+          </div>
+          <div class="form-group col-md-4">
+            <label for="inputEmail4">Response</label>
+            <select class="form-control" id="responses" name="responses">
+              <option value="">Select</option>
+              <% for (let res of list_response) { %>
+                <option value="<%= res.responses %>"><%= res.responses %></option>
+              <% } %>
+            </select>
+          </div>
+        </div>
+      <button type="submit" class="btn btn-info"><i class="fas fa-search"></i> Retrive</button>
+    </form>
+  </div>
+  <br/>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <% var xls = previllage.includes(50); if (xls) { %>
+            <button class="btn btn-success excel"><i class="fas fa-file-excel"></i> XLS</button>
+            <% } %>
+            <% var xls = previllage.includes(51); if (xls) { %>
+            <button class="btn btn-secondary txt"><i class="fas fa-file-alt"></i> TXT</button>
+            <% } %>
+            <table id="example1" class="table table-bordered table-striped" style="font-size: 1rem;">
+              <thead>
+                <tr>
+                  <th rowspan="2">Transaksi</th>
+                  <th rowspan="2">Tanggal</th>
+                  <th rowspan="2">Jam</th>
+                  <th colspan="3">Core Banking</th>
+                  <th colspan="4">Rintis / BI</th>
+                  <th rowspan="2">Nominal</th>
+                  <th rowspan="2">Respon</th>
+                </tr>
+                <tr>
+                  <th scope="col">No Trace</th>
+                  <th scope="col">User ID</th>
+                  <th scope="col">Rekening</th>
+                  <th scope="col">E2e / ID Transaksi</th>
+                  <th scope="col">No Referensi</th>
+                  <th scope="col">Rekening Sumber</th>
+                  <th scope="col">Rekening Tujuan</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (let el of data) { %>
+                  <tr>
+                    <td><%= el.transactions %></td>
+                    <td><%= el.dates ? moment(el.dates).format('L') : '-' %></td>
+                    <td><%= el.hours %></td>
+                    <td><%= el.trace_num_core_banking %></td>
+                    <td><%= el.user_id_core_banking %></td>
+                    <td><%= el.rek_core_banking %></td>
+                    <td><%= el.rintis_transaction_id %></td>
+                    <td><%= el.rintis_no_ref %></td>
+                    <td><%= el.rintis_rek_origin %></td>
+                    <td><%= el.rintis_rek_destinations %></td>
+                    <td><%= el.nominal %></td>
+                    <td><%= el.responses %></td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+</div>
+<%- include('../../layout/footer/js.ejs'); %>
+
+<!-- Additional Js -->
+<script src="/js/sweetalert2.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#example1').DataTable({
+      ordering: false,
+      scrollX: false,
+    });
+  });
+
+  // DOWNLOAD EXCEL
+  $('.excel').click(function(){
+    var trans = "<%= transaction %>";
+    var dates = "<%= dates %>";
+    var responses = "<%= responses %>";
+
+    const param = {trans: trans, dates: dates, responses: responses}
+
+    Swal.fire({
+      title: 'Are you sure want to download?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        $.get("/reporting/excel-abnormal", param, function (response) {
+          if (response.code === 404) {
+            location.reload();
+          } else {
+            window.location="/reporting/download-xls"
+          }
+        });
+      } else {
+        location.reload();
+      }
+    });
+  });
+
+  // DOWNLOAD TXT
+  $('.txt').click(function(){
+    var trans = "<%= transaction %>";
+    var dates = "<%= dates %>";
+    var responses = "<%= responses %>";
+
+    const param = {trans: trans, dates: dates, responses: responses}
+
+    Swal.fire({
+      title: 'Are you sure want to download?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        $.get("/reporting/txt-abnormal", param, function (response) {
+          console.log(response)
+          if (response.code === 404) {
+            location.reload();
+          } else {
+            window.location="/reporting/download-txt"
+          }
+        });
+      } else {
+        location.reload();
+      }
+    });
+  });
+</script>
+<!-- Footer -->
+
+<%- include('../../layout/footer.ejs') %>
+
